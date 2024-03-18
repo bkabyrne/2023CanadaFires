@@ -1,0 +1,35 @@
+######################################################
+#
+# README
+#
+# Code and data to reproduce the results of "Unprecedented Canadian forest fire carbon emissions during 2023"
+#
+# contact: Brendan Byrne
+# email: brendan.k.byrne@jpl.nasa.gov
+#
+######################################################
+
+
+Overview:
+
+The regrided climate data and flux estimates are provided in the "data_for_figures" subdirectory. Climate data were downloaded as described in the methods sections. Inverse estimates can be reproduced using the GEOS-Chem adjoint, which can be downloaded from here: http://wiki.seas.harvard.edu/geos-chem/index.php/Quick_Start_Guide, following the inversion set-up described in the methods. All of the results of the manuscript can be reproduced from the data provided. The python codes reproduce the figures from the manuscript.
+
+
+
+Required content:
+
+1. System Requirements
+
+This code has been tested on the NASA Pleiades computing system (UNIX). The python routined were run using python3/3.9.12
+
+2. Installation guide
+
+No instillation is required. This code should run on any system with python3/3.9.12 and loaded modules
+
+3. Demo
+
+Python routines in main directory can be run to re-create all of the figures in the paper. All of the python codes should run in under 10 minutes.
+
+4. Instructions for use
+
+Execute each python routine and the Figures shown in the manuscript and supplement will be written to the Figures sub-directory. The header of each python code describes the figures made by that particular code.

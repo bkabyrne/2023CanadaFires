@@ -1,0 +1,7 @@
+plot_figures/data_for_figures/
+*.jpg
+*.png
+*.zip
+*.*~
+*.*#
+*.nc
