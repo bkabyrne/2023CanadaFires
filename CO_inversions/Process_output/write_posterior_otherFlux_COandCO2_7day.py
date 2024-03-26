@@ -15,7 +15,7 @@ import numpy.matlib
 from pylab import *
 
 
-def calc_fluxes(SF,nc_CO_fire,nc_CO2_fire,prior_model,year):
+def calc_fluxes(SF,nc_FF_fire,nc_Biogenic_fire,prior_model,year):
     #
     # ================================
     #
@@ -24,14 +24,14 @@ def calc_fluxes(SF,nc_CO_fire,nc_CO2_fire,prior_model,year):
     #
     # inputs:
     #  - SF: array of posterior scale factors
-    #  - nc_CO_fire: path to prior CO fire flux directory
-    #  - nc_CO2_fire: path to prior CO2 fire flux directory
+    #  - nc_FF_fire: path to prior FF flux directory
+    #  - nc_Biogenic_fire: path to prior Biogenic fire flux directory
     #
     # outputs:
-    #  - CO_Prior_flux: timeseries of prior CO fire fluxes (time,lat,lon) 
-    #  - CO_Posterior_flux: timeseries of posterior CO fire fluxes (time,lat,lon) 
-    #  - CO2_Prior_flux: timeseries of prior CO2 fire fluxes (time,lat,lon) 
-    #  - CO2_Posterior_flux: timeseries of posterior CO2 fire fluxes (time,lat,lon) 
+    #  - FF_Prior_flux: timeseries of prior FF fluxes (time,lat,lon) 
+    #  - FF_Posterior_flux: timeseries of posterior FF fluxes (time,lat,lon) 
+    #  - Biogenic_Prior_flux: timeseries of prior Biogenic fluxes (time,lat,lon) 
+    #  - Biogenic_Posterior_flux: timeseries of posterior Biogenic fluxes (time,lat,lon) 
     #
     # ================================
 
@@ -66,35 +66,29 @@ def calc_fluxes(SF,nc_CO_fire,nc_CO2_fire,prior_model,year):
         days_in_month_cum[i] = np.sum(days_in_month[0:i])
     #
     # Apply scale factors to fluxes
-    CO_Prior_flux = np.zeros((365,np.size(lat),np.size(lon)))
-    CO_Posterior_flux = np.zeros((365,np.size(lat),np.size(lon)))
-    CO2_Prior_flux = np.zeros((365,np.size(lat),np.size(lon)))
-    CO2_Posterior_flux = np.zeros((365,np.size(lat),np.size(lon)))
+    FF_Prior_flux = np.zeros((365,np.size(lat),np.size(lon)))
+    FF_Posterior_flux = np.zeros((365,np.size(lat),np.size(lon)))
+    Biogenic_Prior_flux = np.zeros((365,np.size(lat),np.size(lon)))
+    Biogenic_Posterior_flux = np.zeros((365,np.size(lat),np.size(lon)))
     for nn in range(30+31+30+31+31+30):
         #
         SF_index = int(CURRENT_GROUP[nn+Apr1])
         #
         month = np.argmax( nn < days_in_month_cum)+3
         day = int(nn-days_in_month_cum[month-1-3])
-        #
         print(str(month).zfill(2)+'/'+str(day+1).zfill(2))
-        file_in = nc_CO_fire+str(month).zfill(2)+'/'+str(day+1).zfill(2)+'.nc'
-        f=Dataset(file_in,mode='r')
-        if prior_model == 'GFED':
-            CO_Prior_flux[nn+Apr1,:,:] = np.mean(f.variables['CO_Flux'][:],0)  * (60.*60.*24.)/1000. # kgC/km2/s -> gC/m2/d
-        else:
-            CO_Prior_flux[nn+Apr1,:,:] = f.variables['CO_Flux'][:]  * (60.*60.*24.)/1000. # kgC/km2/s -> gC/m2/d
-        CO_Posterior_flux[nn+Apr1,:,:] = CO_Prior_flux[nn+Apr1,:,:] * SF[SF_index,:,:]
         #
-        file_in = nc_CO2_fire+str(month).zfill(2)+'/'+str(day+1).zfill(2)+'.nc'
+        file_in = nc_FF_fire+str(month).zfill(2)+'/'+str(day+1).zfill(2)+'.nc'
         f=Dataset(file_in,mode='r')
-        if prior_model == 'GFED':
-            CO2_Prior_flux[nn+Apr1,:,:] = np.mean(f.variables['CO2_Flux'][:],0)  * (60.*60.*24.)/1000. # kgC/km2/s -> gC/m2/d
-        else:
-            CO2_Prior_flux[nn+Apr1,:,:] = f.variables['CO2_Flux'][:]  * (60.*60.*24.)/1000. # kgC/km2/s -> gC/m2/d 
-        CO2_Posterior_flux[nn+Apr1,:,:] = CO2_Prior_flux[nn+Apr1,:,:] * SF[SF_index,:,:]
+        FF_Prior_flux[nn+Apr1,:,:] = f.variables['CO_Flux'][:]  * (60.*60.*24.)/1000. # kgC/km2/s -> gC/m2/d
+        FF_Posterior_flux[nn+Apr1,:,:] = FF_Prior_flux[nn+Apr1,:,:] * SF[SF_index,:,:]
+        #
+        file_in = nc_Biogenic_fire+str(month).zfill(2)+'/'+str(day+1).zfill(2)+'.nc'
+        f=Dataset(file_in,mode='r')
+        Biogenic_Prior_flux[nn+Apr1,:,:] = f.variables['CO_Flux'][:]  * (60.*60.*24.)/1000. # kgC/km2/s -> gC/m2/d 
+        Biogenic_Posterior_flux[nn+Apr1,:,:] = Biogenic_Prior_flux[nn+Apr1,:,:] * SF[SF_index,:,:]
     #
-    return CO_Prior_flux, CO_Posterior_flux, CO2_Prior_flux, CO2_Posterior_flux
+    return FF_Prior_flux, FF_Posterior_flux, Biogenic_Prior_flux, Biogenic_Posterior_flux
 
 
 def calculate_2x25_grid_area():
@@ -130,7 +124,7 @@ def calculate_2x25_grid_area():
     return grid_area_2x25_arr
 
 
-def write_dataset(nc_out, CO_Flux_prior, CO_Flux_post, CO2_Flux_prior, CO2_Flux_post):
+def write_dataset(nc_out, FF_Flux_prior, FF_Flux_post, Biogenic_Flux_prior, Biogenic_Flux_post):
     #
     # =============================
     # Write prior/posterior fluxes to netcdf
@@ -152,18 +146,18 @@ def write_dataset(nc_out, CO_Flux_prior, CO_Flux_post, CO2_Flux_prior, CO2_Flux_
     latss[:] = lat
     lonss = dataset.createVariable('longitude', np.float64, ('lon',))
     lonss[:] = lon
-    CO_priors = dataset.createVariable('CO_prior', np.float64, ('time','lat','lon'))
-    CO_priors[:,:,:] = CO_Flux_prior
-    CO_priors.units = 'gC/m2/day'
-    CO_posts = dataset.createVariable('CO_post', np.float64, ('time','lat','lon'))
-    CO_posts[:,:,:] = CO_Flux_post
-    CO_posts.units = 'gC/m2/day'
-    CO2_priors = dataset.createVariable('CO2_prior', np.float64, ('time','lat','lon'))
-    CO2_priors[:,:,:] = CO2_Flux_prior
-    CO2_priors.units = 'gC/m2/day'
-    CO2_posts = dataset.createVariable('CO2_post', np.float64, ('time','lat','lon'))
-    CO2_posts[:,:,:] = CO2_Flux_post
-    CO2_posts.units = 'gC/m2/day'
+    FF_priors = dataset.createVariable('FF_prior', np.float64, ('time','lat','lon'))
+    FF_priors[:,:,:] = FF_Flux_prior
+    FF_priors.units = 'gC/m2/day'
+    FF_posts = dataset.createVariable('FF_post', np.float64, ('time','lat','lon'))
+    FF_posts[:,:,:] = FF_Flux_post
+    FF_posts.units = 'gC/m2/day'
+    Biogenic_priors = dataset.createVariable('Biogenic_prior', np.float64, ('time','lat','lon'))
+    Biogenic_priors[:,:,:] = Biogenic_Flux_prior
+    Biogenic_priors.units = 'gC/m2/day'
+    Biogenic_posts = dataset.createVariable('Biogenic_post', np.float64, ('time','lat','lon'))
+    Biogenic_posts[:,:,:] = Biogenic_Flux_post
+    Biogenic_posts.units = 'gC/m2/day'
     dataset.close()
 
 if __name__ == "__main__":
@@ -174,7 +168,7 @@ if __name__ == "__main__":
 
 
     for rep in [0,1]:
-        for year in range(2023,2024):
+        for year in range(2019,2024):
             for prior_model in ['GFED','GFAS','QFED']:
                 
                 
@@ -191,22 +185,18 @@ if __name__ == "__main__":
                 f.close()
                 
                 # Directories of prior fluxes
-                if prior_model == 'GFED':
-                    ncdir_CO_fire = '/nobackup/bbyrne1/Flux_2x25_CO/BiomassBurn/GFED41s/'+str(year).zfill(4)+'/'
-                    ncdir_CO2_fire ='/nobackup/bbyrne1/GFED41s_2x25/'+str(year).zfill(4)+'/'
-                else:
-                    ncdir_CO_fire = '/nobackup/bbyrne1/Flux_2x25_CO/BiomassBurn/'+prior_model+'/'+str(year).zfill(4)+'/'
-                    ncdir_CO2_fire = '/nobackup/bbyrne1/Flux_2x25_CO/BiomassBurn/'+prior_model+'_CO2/'+str(year).zfill(4)+'/'
-                    #ncdir_CO2_fire = '/nobackup/bbyrne1/Flux_2x25_CO/BiomassBurn/'+prior_model+'_CO2/'+str(year).zfill(4)+'/'
+                ncdir_FF_fire = '/nobackup/bbyrne1/Flux_2x25_CO/FossilFuel/CEDSdaily/'+str(year).zfill(4)+'/'
+                ncdir_Biogenic_fire = '/nobackup/bbyrne1/Flux_2x25_CO/Biogenic/Biogenic_units/'+str(year).zfill(4)+'/'
+                #ncdir_Biogenic_fire = '/nobackup/bbyrne1/Flux_2x25_FF/BiomassBurn/'+prior_model+'_Biogenic/'+str(year).zfill(4)+'/'
             
                 # Read & Caclulate prior and posterior fluxes
-                CO_Flux_prior, CO_Flux_post, CO2_Flux_prior, CO2_Flux_post = calc_fluxes(SF,ncdir_CO_fire,ncdir_CO2_fire,prior_model,year)
+                FF_Flux_prior, FF_Flux_post, Biogenic_Flux_prior, Biogenic_Flux_post = calc_fluxes(SF,ncdir_FF_fire,ncdir_Biogenic_fire,prior_model,year)
             
                 # Write out data
                 dir_out = '/u/bbyrne1/python_codes/Canada_Fires_2023/Byrne_etal_codes/plot_figures/data_for_figures/'
                 if rep==1:
-                    ncfile_out = dir_out+'TROPOMI_rep_'+prior_model+'_COinv_2x25_'+str(year).zfill(4)+'_fire_7day.nc'
+                    ncfile_out = dir_out+'TROPOMI_rep_'+prior_model+'_COinv_2x25_'+str(year).zfill(4)+'_otherFlux_7day.nc'
                 else:
-                    ncfile_out = dir_out+'TROPOMI_'+prior_model+'_COinv_2x25_'+str(year).zfill(4)+'_fire_7day.nc'
+                    ncfile_out = dir_out+'TROPOMI_'+prior_model+'_COinv_2x25_'+str(year).zfill(4)+'_otherFlux_7day.nc'
                 
-                write_dataset(ncfile_out, CO_Flux_prior, CO_Flux_post, CO2_Flux_prior, CO2_Flux_post)
+                write_dataset(ncfile_out, FF_Flux_prior, FF_Flux_post, Biogenic_Flux_prior, Biogenic_Flux_post)
