@@ -144,9 +144,9 @@ def write_dataset(nc_out, CO_Flux_prior, CO_Flux_post, CO2_Flux_prior, CO2_Flux_
 
 if __name__ == "__main__":
     
-    # -- Parameters --
-    iteration = '07'
-    # ----------------
+    #    # -- Parameters --
+    #    iteration = '07'
+    #    # ----------------
 
     CO_Flux_prior = np.zeros((40,365,91,144))
     CO_Flux_post = np.zeros((40,365,91,144))
@@ -154,6 +154,12 @@ if __name__ == "__main__":
     CO2_Flux_post = np.zeros((40,365,91,144))
 
     for prior_model in ['GFED','QFED','GFAS']:
+
+        if prior_model == 'GFED':
+            iteration = '03'
+        else:
+            iteration = '03'
+
         
         for ens_member in range(1,41):
                         
@@ -168,6 +174,10 @@ if __name__ == "__main__":
             lat=f.variables['lat'][:]
             SF=f.variables['EMS-01'][:]
             f.close()
+
+            print(ncfile_SF)
+            print(np.max(SF))
+            print(np.mean(SF))
             
             # Directories of prior fluxes
             if prior_model == 'GFED':
@@ -182,5 +192,5 @@ if __name__ == "__main__":
             
         # Write out data
         dir_out = '/u/bbyrne1/python_codes/Canada_Fires_2023/Byrne_etal_codes/plot_figures/data_for_figures/'
-        ncfile_out = dir_out+'TROPOMI_'+prior_model+'_COinv_2x25_2023_fire_3day_MonthCarlo.nc' 
+        ncfile_out = dir_out+'TROPOMI_'+prior_model+'_COinv_2x25_2023_fire_3day_MonteCarlo.nc' 
         write_dataset(ncfile_out, CO_Flux_prior, CO_Flux_post, CO2_Flux_prior, CO2_Flux_post)

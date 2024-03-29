@@ -33,7 +33,7 @@ import matplotlib.patches as mpatches
 #
 # ===========================================
 
-def write_TROPOMI_wRep_error(year,month,day,iterN):
+def write_TROPOMI_wRep_error(inventory,year,month,day,iterN):
     
     print('--------------------------------------------')
     
@@ -48,7 +48,7 @@ def write_TROPOMI_wRep_error(year,month,day,iterN):
         mode=f.variables['mode'][:]
         time=f.variables['time'][:]
         pressure=f.variables['pressure'][:]
-        xCO=f.variables['xCO'][:]
+        xCO_act=f.variables['xCO'][:]
         xCOapriori=f.variables['xCO-apriori'][:]
         xCOpressureWeight=f.variables['xCO-pressureWeight'][:]
         xCOuncertainty=f.variables['xCO-uncertainty'][:]
@@ -56,12 +56,17 @@ def write_TROPOMI_wRep_error(year,month,day,iterN):
         COapriori=f.variables['CO-apriori'][:]
         f.close()
         # ---------------------
+        nc_fwd = '/nobackup/bbyrne1/GHGF-CMS-7day-COinv-2023/FWD_COinv_rep_'+inventory+'_2023/OBSF/TROPOMIrep_XCO_2x25/'+str(year).zfill(4)+'/'+str(int(month)).zfill(2)+'/'+str(int(day)).zfill(2)+'.nc'  
+        f = Dataset(nc_fwd,'r')
+        xCO=np.squeeze(f.variables['HX'][:])
+        f.close()
+        # ---------------------
 
         unc_perturb = np.random.normal(loc=0, scale=xCOuncertainty)
         xCO_perturb = xCO + unc_perturb
 
         # Write out TROPOMI obs with total uncertainty
-        nc_file_TROPOMIrep = '/nobackup/bbyrne1/TROPOMIrep_XCO_2x25_'+str(iterN).zfill(2)+'/'+str(year).zfill(4)+'/'+str(int(month)).zfill(2)+'/'+str(int(day)).zfill(2)+'.nc'
+        nc_file_TROPOMIrep = '/nobackup/bbyrne1/TROPOMIrep_XCO_2x25_'+inventory+'_'+str(iterN).zfill(2)+'/'+str(year).zfill(4)+'/'+str(int(month)).zfill(2)+'/'+str(int(day)).zfill(2)+'.nc'
         print(nc_file_TROPOMIrep)
         dataset = Dataset(nc_file_TROPOMIrep,'w')
         nSamples = dataset.createDimension('nSamples',np.size(time))
@@ -114,8 +119,9 @@ for i in range(np.size(days_in_month)):
 #for year in range(2022,2024):
 # Loop over days of the year
 year = 2023
-for iteration in range(1,41):
-    for ii in range(days_in_year-1):
-        # Write the TROPOMI data with representativeness errors
-        write_TROPOMI_wRep_error(year,month_arr[ii],day_arr[ii],iteration)
+for inventory in ['GFED','GFAS','QFED']:
+    for iteration in range(1,41):
+        for ii in range(days_in_year-1):
+            # Write the TROPOMI data with representativeness errors
+            write_TROPOMI_wRep_error(inventory,year,month_arr[ii],day_arr[ii],iteration)
     

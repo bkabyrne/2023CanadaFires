@@ -25,20 +25,6 @@ from sklearn.metrics import r2_score
 # #########################################################################
 
 
-def read_fluxes(inventory,year,month,day):
-    #
-    # =========================================
-    # Read SF uncertainty
-    # =========================================
-    #
-    nc_in = '/nobackup/bbyrne1/Flux_2x25_CO/Combined/FF_'+inventory+'_Bio_UNCr_3Day/'+str(year).zfill(4)+'/'+str(month).zfill(2)+'/'+str(day).zfill(2)+'.nc'
-    #
-    f=Dataset(nc_in,mode='r')
-    Uncertainty = f.variables['Uncertainty'][:]
-    f.close()
-    #
-    return Uncertainty
-
 
 def write_fluxes(inventory,yyyy,unc_perturb,iterN):
     #
@@ -46,11 +32,11 @@ def write_fluxes(inventory,yyyy,unc_perturb,iterN):
     # Write out SF uncertainty pertubation
     # =========================================
     #
-    nc_out = 'SF_perturb/SF_perturb_'+inventory+'_'+str(yyyy).zfill(4)+'_'+str(iterN).zfill(2)+'.nc'
+    nc_out = 'SF_perturb/SF_perturb_'+inventory+'_'+str(yyyy).zfill(4)+'_'+str(iterN).zfill(2)+'_7day.nc'
     #
     dataset = Dataset(nc_out,'w')
     #
-    lats = dataset.createDimension('MMSCL',61)
+    lats = dataset.createDimension('MMSCL',26)
     lats = dataset.createDimension('lat',91)
     lons = dataset.createDimension('lon',144)
     #
@@ -59,34 +45,15 @@ def write_fluxes(inventory,yyyy,unc_perturb,iterN):
     #
     dataset.close()
     #
-    return Uncertainty
 
 
 # ========================================================================================
 
-inventory = 'GFAS'
+inventory = 'QFED'
 yyyy = 2023
-days_in_months = np.array([31,28,31,30,31,30,31,31,30,31,30,31])
-
-# Read and combine the Fire, FF and biogenic fluxes
-Uncertainty = np.zeros((np.sum(days_in_months[3:9]), 91, 144))
-n1=0
-for mm in range(3,9):
-    for dd in range(days_in_months[mm]):
-        #
-        Uncertainty[n1,:,:] = read_fluxes(inventory,yyyy,mm+1,dd+1)
-        #
-        n1=n1+1
-
 
 # We will use 3-Day grouping for optimizations                    
-unc_grouped = np.zeros((61,91,144))
-for ind in range(61): # each ind is a temporal grouping of 3 day
-    unc_grouped[ind,:,:] = np.mean(Uncertainty[(ind)*3:(ind+1)*3,:,:],0)
-
-II = np.where(unc_grouped>1)
-unc_grouped[II] = 1
-
+unc_grouped = np.ones((26,91,144)) * 2.
 
 for iteration in range(1,41):
     #
