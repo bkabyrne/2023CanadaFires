@@ -14,6 +14,38 @@ from math import pi, cos, radians
 import numpy.matlib
 from pylab import *
 
+def find_file_with_largest_number(directory):
+    #                                                                                         
+    # --------------------------                                                              
+    #                                                                                         
+    # This function finds the file in the given directory                                     
+    # that contains the largest number and 'SF' in its name                                   
+    #                                                                                         
+    # inputs:                                                                                 
+    #   - directory: directory to conduct search                                              
+    #                                                                                         
+    # outputs:                                                                                
+    #   - file with largest number in name                                                    
+    #                                                                                         
+    # --------------------------                                                              
+    #                                                                                         
+    files1 = [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))]
+    files = [item for item in files1 if "sf" in item]
+    max_number = float('-inf')
+    max_file = None
+    #                                                                                         
+    for file in files:
+        file_name, file_extension = os.path.splitext(file)
+        try:
+            file_number = int(''.join(filter(str.isdigit, file_name)))
+            if file_number > max_number:
+                max_number = file_number
+                max_file = file
+        except ValueError:
+            pass
+    #                                                                                         
+    return os.path.join(directory, max_file) if max_file else None
+
 
 def calc_fluxes(SF,nc_CO_fire,nc_CO2_fire,prior_model):
     #
@@ -46,13 +78,15 @@ def calc_fluxes(SF,nc_CO_fire,nc_CO2_fire,prior_model):
     CO_Posterior_flux = np.zeros((365,np.size(lat),np.size(lon)))
     CO2_Prior_flux = np.zeros((365,np.size(lat),np.size(lon)))
     CO2_Posterior_flux = np.zeros((365,np.size(lat),np.size(lon)))
-    for nnt in range(183-30):
+    for nnt in range(183-30-1):
         nn = nnt+30
         #
-        SF_index = int(np.floor(nn/3.))
+        SF_index = int(np.floor(nn/7.))
         month = np.argmax( nn < days_in_month_cum)+3
         day = int(nn-days_in_month_cum[month-1-3])
         #
+        #print(SF_index)
+        #print(str(month).zfill(2)+'/'+str(day+1).zfill(2))
         file_in = nc_CO_fire+str(month).zfill(2)+'/'+str(day+1).zfill(2)+'.nc'
         f=Dataset(file_in,mode='r')
         if prior_model == 'GFED':
@@ -144,10 +178,6 @@ def write_dataset(nc_out, CO_Flux_prior, CO_Flux_post, CO2_Flux_prior, CO2_Flux_
 
 if __name__ == "__main__":
     
-    #    # -- Parameters --
-    #    iteration = '07'
-    #    # ----------------
-
     CO_Flux_prior = np.zeros((40,365,91,144))
     CO_Flux_post = np.zeros((40,365,91,144))
     CO2_Flux_prior = np.zeros((40,365,91,144))
@@ -155,19 +185,14 @@ if __name__ == "__main__":
 
     for prior_model in ['GFED','QFED','GFAS']:
 
-        if prior_model == 'GFED':
-            iteration = '09'
-        else:
-            iteration = '09'
-
         
         for ens_member in range(1,41):
                         
             # Read in the scale factors
             if prior_model == 'GFED':
-                ncfile_SF = '/nobackup/bbyrne1/GHGF-CMS-3day-COinv-MonteCarlo/Run_COinv_'+str(ens_member).zfill(2)+'/GDT-EMS/EMS-sf-'+iteration+'.nc'
+                ncfile_SF = find_file_with_largest_number('/nobackup/bbyrne1/GHGF-CMS-7day-COinv-MonteCarlo/Run_COinv_'+str(ens_member).zfill(2)+'/GDT-EMS/')
             else:
-                ncfile_SF = '/nobackup/bbyrne1/GHGF-CMS-3day-COinv-MonteCarlo/Run_COinv_'+prior_model+'_'+str(ens_member).zfill(2)+'/GDT-EMS/EMS-sf-'+iteration+'.nc'
+                ncfile_SF = find_file_with_largest_number('/nobackup/bbyrne1/GHGF-CMS-7day-COinv-MonteCarlo/Run_COinv_'+prior_model+'_'+str(ens_member).zfill(2)+'/GDT-EMS/')
             print(ncfile_SF)
             f=Dataset(ncfile_SF,mode='r')
             lon=f.variables['lon'][:]
@@ -175,10 +200,6 @@ if __name__ == "__main__":
             SF=f.variables['EMS-01'][:]
             f.close()
 
-            print(ncfile_SF)
-            print(np.max(SF))
-            print(np.mean(SF))
-            
             # Directories of prior fluxes
             if prior_model == 'GFED':
                 ncdir_CO_fire = '/nobackup/bbyrne1/Flux_2x25_CO/BiomassBurn/GFED41s/2023/'
@@ -192,5 +213,5 @@ if __name__ == "__main__":
             
         # Write out data
         dir_out = '/u/bbyrne1/python_codes/Canada_Fires_2023/Byrne_etal_codes/plot_figures/data_for_figures/'
-        ncfile_out = dir_out+'TROPOMI_'+prior_model+'_COinv_2x25_2023_fire_3day_MonteCarlo.nc' 
+        ncfile_out = dir_out+'TROPOMI_'+prior_model+'_COinv_2x25_2023_fire_7day_MonteCarlo.nc' 
         write_dataset(ncfile_out, CO_Flux_prior, CO_Flux_post, CO2_Flux_prior, CO2_Flux_post)

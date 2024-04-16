@@ -157,22 +157,23 @@ def regrid_QFED_2x25(year_in,days_in_month,days_in_year,lat_2x25,lon_2x25,area_2
         print( np.sum(CO_Flux_kgCkm2s * area_QFED) )  # lat[191:546] # lon[463:786]                                                                
         print( np.sum(CO_Flux_kgCkm2s_regrid * area_2x25) )
         print( (np.sum(CO_Flux_kgCkm2s * area_QFED)) / (np.sum(CO_Flux_kgCkm2s_regrid * area_2x25)) )
-        #                                                                                                                                                                                 
-        # Write out fluxes                                                                                                                                                                
+        #
+        # Write out fluxes
         nc_out = '/nobackup/bbyrne1/Flux_2x25_CO/BiomassBurn/QFED/'+str(year_in).zfill(4)+'/'+str(month_in).zfill(2)+'/'+str(day_in).zfill(2)+'.nc'
         print(nc_out)
-        #                                                                                                                                                                                 
+        #
         dataset = Dataset(nc_out,'w')
-        #                                                                                                                                                                                 
+        #
         lats = dataset.createDimension('lat',np.size(lat_2x25))
         lons = dataset.createDimension('lon',np.size(lon_2x25))
-        #                                                                                                                                                                                 
+        #
         postBBs = dataset.createVariable('CO_Flux', np.float64, ('lat','lon'))
         postBBs[:,:] = CO_Flux_kgCkm2s_regrid
         postBBs.units = 'kgC/km2/s'
-        #                                                                                                                                                                                 
+        #
         dataset.close()
-    # =============================================                                                                                                                                   
+        # =============================================
+
 # ---------- Function calls 
 
 

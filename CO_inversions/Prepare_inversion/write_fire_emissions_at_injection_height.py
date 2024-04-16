@@ -122,6 +122,12 @@ for prior_model in ['GFED','QFED','GFAS']:
             CO_flux_BB_post = f.variables['CO_post'][:] * 1000./(60.*60.*24.) # gC/m2/d --> kgC/km2/s
             f.close()
 
+            #fig = plt.figure(1)                                                                                                                                     
+            #plt.plot(np.sum(np.sum(CO_flux_BB_prior,1),1),'k:')                                                                                                   
+            #plt.plot(np.sum(np.sum(CO_flux_BB_post,1),1),'b')                                                                                                     
+            #plt.savefig('Fire_test.png')                                                                                                                      
+            #stophere 
+
             for i in day_of_year[I_AprSep]:
     
                 CO_flux_BB_prior_3hr, CO_flux_BB_post_3hr, injh_level = calculate_daily_injh_and_CO_flux( year, month_of_year[i-1], day_of_month[i-1], CO_flux_BB_prior[i-1,:,:], CO_flux_BB_post[i-1,:,:])

@@ -245,14 +245,16 @@ for i in range(5):
 
 
 # ----------- Monte Carlo estimates
-nc_file = './data_for_figures/TROPOMI_GFED_COinv_2x25_2023_fire_3day_MonthCarlo.nc'
+nc_file = './data_for_figures/TROPOMI_GFED_COinv_2x25_2023_fire_7day_MonteCarlo.nc'
 post_MaySep_TROPOMI_rep_GFED_7day_MonteCarlo = MaySep_forest_fluxes_MonteCarlo(2023,nc_file,Forest_mask_2x25)
 #
-nc_file = './data_for_figures/TROPOMI_QFED_COinv_2x25_2023_fire_3day_MonthCarlo.nc'
+nc_file = './data_for_figures/TROPOMI_QFED_COinv_2x25_2023_fire_7day_MonteCarlo.nc'
 post_MaySep_TROPOMI_rep_QFED_7day_MonteCarlo = MaySep_forest_fluxes_MonteCarlo(2023,nc_file,Forest_mask_2x25)
+#post_MaySep_TROPOMI_rep_QFED_7day_MonteCarlo = post_MaySep_TROPOMI_rep_GFED_7day_MonteCarlo.copy()
 #
-nc_file = './data_for_figures/TROPOMI_GFAS_COinv_2x25_2023_fire_3day_MonthCarlo.nc'
+nc_file = './data_for_figures/TROPOMI_GFAS_COinv_2x25_2023_fire_7day_MonteCarlo.nc'
 post_MaySep_TROPOMI_rep_GFAS_7day_MonteCarlo = MaySep_forest_fluxes_MonteCarlo(2023,nc_file,Forest_mask_2x25)
+#post_MaySep_TROPOMI_rep_GFAS_7day_MonteCarlo = post_MaySep_TROPOMI_rep_GFED_7day_MonteCarlo.copy()
 # -----------
 
 #
@@ -319,49 +321,50 @@ plt.fill_between([16,17],[0,0],[900,900],color='b',alpha=0.05,linewidth=0.0)
 plt.fill_between([18,19],[0,0],[900,900],color='b',alpha=0.05,linewidth=0.0)
 plt.fill_between([20,21],[0,0],[900,900],color='b',alpha=0.05,linewidth=0.0)
 plt.fill_between([22,23],[0,0],[900,900],color='b',alpha=0.05,linewidth=0.0)
+# post_MaySep_TROPOMI_rep_GFAS_7day_MonteCarlo
 plt.errorbar(
     np.arange(5) + 19 + 0.5 / 3.,
     np.mean(post_MaySep_TROPOMI_GFED_all, 1) * 1e-12,
-    yerr=np.std(post_MaySep_TROPOMI_GFED_all, 1) * 1e-12,
+    yerr= ( np.std(post_MaySep_TROPOMI_GFED_all, 1)**2. + np.std(post_MaySep_TROPOMI_rep_GFED_7day_MonteCarlo)**2. )**0.5 * 1e-12,
     fmt='o',  # Use markers only, no line
     elinewidth=0.5,  # Set error bar line width to 0.5
-    capsize=3,  # Add error bar caps with a size of 4
+    capsize=2.5,  # Add error bar caps with a size of 4
     markersize=2,  # Reduce marker size to 5 (adjust as needed)
     color='k')
 plt.errorbar(
     np.arange(1) + 23 + 1.5 / 3.,
     np.mean(post_MaySep_TROPOMI_GFAS_all, 1)[4] * 1e-12,
-    yerr=np.std(post_MaySep_TROPOMI_GFAS_all, 1)[4] * 1e-12,
+    yerr=(np.std(post_MaySep_TROPOMI_GFAS_all, 1)[4]**2. + np.std(post_MaySep_TROPOMI_rep_GFAS_7day_MonteCarlo)**2. )**0.5 * 1e-12,
     fmt='o',  # Use markers only, no line
     elinewidth=0.5,  # Set error bar line width to 0.5
-    capsize=3,  # Add error bar caps with a size of 4
+    capsize=2.5,  # Add error bar caps with a size of 4
     markersize=2,  # Reduce marker size to 5 (adjust as needed)
     color='k')
 plt.errorbar(
     np.arange(5) + 19 + 2.5 / 3.,
     np.mean(post_MaySep_TROPOMI_QFED_all, 1) * 1e-12,
-    yerr=np.std(post_MaySep_TROPOMI_QFED_all, 1) * 1e-12,
+    yerr=(np.std(post_MaySep_TROPOMI_QFED_all, 1)**2. + np.std(post_MaySep_TROPOMI_rep_QFED_7day_MonteCarlo)**2. )**0.5 * 1e-12,
     fmt='o',  # Use markers only, no line
     elinewidth=0.5,  # Set error bar line width to 0.5
-    capsize=3,  # Add error bar caps with a size of 4
+    capsize=2.5,  # Add error bar caps with a size of 4
     markersize=2,  # Reduce marker size to 5 (adjust as needed)
     color='k')
 l1=plt.bar(np.arange(21)+3+0.5/3.,prior_GFED_MaySep_vec*1e-12,width=1./3.,color=colors[1],alpha=0.7)
 l2=plt.bar(np.arange(21)+3+1.5/3.,prior_GFAS_MaySep_vec*1e-12,width=1./3.,color=colors[2],alpha=0.7)
 l3=plt.bar(np.arange(21)+3+2.5/3.,prior_QFED_MaySep_vec*1e-12,width=1./3.,color=colors[3],alpha=0.7)
 l4=plt.plot(np.arange(12)+10+0.4/3.,post_MaySep_MOPITT_vec*1e-12,'o',markerfacecolor='powderblue',markersize=4,markeredgecolor='k',markeredgewidth=.5)
-l5=plt.plot(np.arange(5)+19+0.6/3.,post_MaySep_TROPOMI_vec*1e-12,'d',markerfacecolor='peachpuff',markersize=4,markeredgecolor='k',markeredgewidth=.5)
-l6=plt.plot(np.arange(1)+23+1.6/3.,post_MaySep_TROPOMI_GFAS_vec*1e-12,'v',markerfacecolor='peachpuff',markersize=4,markeredgecolor='k',markeredgewidth=.5)
-l7=plt.plot(np.arange(1)+23+2.6/3.,post_MaySep_TROPOMI_QFED_vec*1e-12,'^',markerfacecolor='peachpuff',markersize=4,markeredgecolor='k',markeredgewidth=.5)
+#l5=plt.plot(np.arange(5)+19+0.6/3.,post_MaySep_TROPOMI_vec*1e-12,'d',markerfacecolor='peachpuff',markersize=4,markeredgecolor='k',markeredgewidth=.5)
+#l6=plt.plot(np.arange(1)+23+1.6/3.,post_MaySep_TROPOMI_GFAS_vec*1e-12,'v',markerfacecolor='peachpuff',markersize=4,markeredgecolor='k',markeredgewidth=.5)
+#l7=plt.plot(np.arange(1)+23+2.6/3.,post_MaySep_TROPOMI_QFED_vec*1e-12,'^',markerfacecolor='peachpuff',markersize=4,markeredgecolor='k',markeredgewidth=.5)
 #
 # post_MaySep_TROPOMI_GFED_all = np.zeros((5,4))
 plt.errorbar(
     np.arange(5) + 19 + 0.5 / 3.,
     np.mean(post_MaySep_TROPOMI_GFED_all, 1) * 1e-12,
-    yerr=np.std(post_MaySep_TROPOMI_GFED_all, 1) * 1e-12,
+    yerr=(np.std(post_MaySep_TROPOMI_GFED_all, 1)**2. + np.std(post_MaySep_TROPOMI_rep_GFED_7day_MonteCarlo)**2. )**0.5 * 1e-12,
     fmt='o',  # Use markers only, no line
     elinewidth=0.5,  # Set error bar line width to 0.5
-    capsize=4,  # Add error bar caps with a size of 4
+    capsize=2.5,  # Add error bar caps with a size of 4
     markersize=2,  # Reduce marker size to 5 (adjust as needed)
     color='k'
 )
@@ -405,7 +408,7 @@ plt.text(21.5,-15,'21',ha='center',va='top')
 plt.text(22.5,-15,'22',ha='center',va='top')
 plt.text(23.5,-15,'23',ha='center',va='top')
 ax1.set_xticklabels([])
-plt.legend((l1[0],l2[0],l3[0],l4[0],l5[0],l6[0],l7[0]),('GFED','GFAS','QFED','MOPITT GFED','TROPOMI GFED','TROPOMI GFAS','TROPOMI QFED'),ncol=2,handletextpad=0.3,labelspacing=0.5)
+plt.legend((l1[0],l2[0],l3[0],l4[0]),('GFED','GFAS','QFED','MOPITT GFED'),ncol=2,handletextpad=0.3,labelspacing=0.5)
 plt.ylim([0,850])
 plt.ylabel('CO$_2$+CO May-Sep\nfire emissions (TgC)')
 plt.savefig('Figures/Byrne_etal_FigS1_revision.png', dpi=300)
@@ -450,36 +453,36 @@ def plot_section(GFED,GFAS,QFED,start,ispost):
 plot_section(prior_GFED_MaySep_vec[20],prior_GFAS_MaySep_vec[20],prior_QFED_MaySep_vec[20],0.5,0)
 plt.text(2.5,-20/1000.,'Bottom-up',ha='center',va='top',fontsize=9)
 # ----------
-plot_section(post_MaySep_TROPOMI_rep_GFED_3day_vec[4],post_MaySep_TROPOMI_rep_GFAS_3day_vec[4],post_MaySep_TROPOMI_rep_QFED_3day_vec[4],5.5,1)
-plt.text(7.5,-20/1000.,'3 d opt\nw/ rep err',ha='center',va='top',fontsize=9)
+plot_section(post_MaySep_TROPOMI_rep_GFED_7day_vec[4],post_MaySep_TROPOMI_rep_GFAS_7day_vec[4],post_MaySep_TROPOMI_rep_QFED_7day_vec[4],5.5,1)
+plt.text(7.5,-20/1000.,'7 d opt\nw/ rep err',ha='center',va='top',fontsize=9)
 #
-GFED_max = post_MaySep_TROPOMI_rep_GFED_3day_vec[4] + np.std(post_MaySep_TROPOMI_rep_GFED_7day_MonteCarlo)
-GFED_min = post_MaySep_TROPOMI_rep_GFED_3day_vec[4] - np.std(post_MaySep_TROPOMI_rep_GFED_7day_MonteCarlo)
+GFED_max = post_MaySep_TROPOMI_rep_GFED_7day_vec[4] + np.std(post_MaySep_TROPOMI_rep_GFED_7day_MonteCarlo)
+GFED_min = post_MaySep_TROPOMI_rep_GFED_7day_vec[4] - np.std(post_MaySep_TROPOMI_rep_GFED_7day_MonteCarlo)
 plt.plot([5.5+0.5,5.5+0.5],[GFED_min*1e-15,GFED_max*1e-15],color=colors[1])
 plt.plot([5.5+0.1,5.5+0.9],[GFED_min*1e-15,GFED_min*1e-15],color=colors[1])
 plt.plot([5.5+0.1,5.5+0.9],[GFED_max*1e-15,GFED_max*1e-15],color=colors[1])
 #
-GFAS_max = post_MaySep_TROPOMI_rep_GFAS_3day_vec[4] + np.std(post_MaySep_TROPOMI_rep_GFAS_7day_MonteCarlo)
-GFAS_min = post_MaySep_TROPOMI_rep_GFAS_3day_vec[4] - np.std(post_MaySep_TROPOMI_rep_GFAS_7day_MonteCarlo)
+GFAS_max = post_MaySep_TROPOMI_rep_GFAS_7day_vec[4] + np.std(post_MaySep_TROPOMI_rep_GFAS_7day_MonteCarlo)
+GFAS_min = post_MaySep_TROPOMI_rep_GFAS_7day_vec[4] - np.std(post_MaySep_TROPOMI_rep_GFAS_7day_MonteCarlo)
 plt.plot([5.5+1.5,5.5+1.5],[GFAS_min*1e-15,GFAS_max*1e-15],color=colors[2])
 plt.plot([5.5+1.1,5.5+1.9],[GFAS_min*1e-15,GFAS_min*1e-15],color=colors[2])
 plt.plot([5.5+1.1,5.5+1.9],[GFAS_max*1e-15,GFAS_max*1e-15],color=colors[2])
 #
-QFED_max = post_MaySep_TROPOMI_rep_QFED_3day_vec[4] + np.std(post_MaySep_TROPOMI_rep_QFED_7day_MonteCarlo)
-QFED_min = post_MaySep_TROPOMI_rep_QFED_3day_vec[4] - np.std(post_MaySep_TROPOMI_rep_QFED_7day_MonteCarlo)
+QFED_max = post_MaySep_TROPOMI_rep_QFED_7day_vec[4] + np.std(post_MaySep_TROPOMI_rep_QFED_7day_MonteCarlo)
+QFED_min = post_MaySep_TROPOMI_rep_QFED_7day_vec[4] - np.std(post_MaySep_TROPOMI_rep_QFED_7day_MonteCarlo)
 plt.plot([5.5+2.5,5.5+2.5],[QFED_min*1e-15,QFED_max*1e-15],color=colors[3])
 plt.plot([5.5+2.1,5.5+2.9],[QFED_min*1e-15,QFED_min*1e-15],color=colors[3])
 plt.plot([5.5+2.1,5.5+2.9],[QFED_max*1e-15,QFED_max*1e-15],color=colors[3])
 #
 # ----------
-plot_section(post_MaySep_TROPOMI_GFED_3day_vec[4],post_MaySep_TROPOMI_GFAS_3day_vec[4],post_MaySep_TROPOMI_QFED_3day_vec[4],10.5,1)
-plt.text(12.5,-20/1000.,'3 d opt\nw/out rep err',ha='center',va='top',fontsize=9)
+plot_section(post_MaySep_TROPOMI_GFED_7day_vec[4],post_MaySep_TROPOMI_GFAS_7day_vec[4],post_MaySep_TROPOMI_QFED_7day_vec[4],10.5,1)
+plt.text(12.5,-20/1000.,'7 d opt\nw/out rep err',ha='center',va='top',fontsize=9)
 # ----------
-plot_section(post_MaySep_TROPOMI_rep_GFED_7day_vec[4],post_MaySep_TROPOMI_rep_GFAS_7day_vec[4],post_MaySep_TROPOMI_rep_QFED_7day_vec[4],15.5,1)
-plt.text(17.5,-20/1000.,'7 d opt\nw/ rep err',ha='center',va='top',fontsize=9)
+plot_section(post_MaySep_TROPOMI_rep_GFED_3day_vec[4],post_MaySep_TROPOMI_rep_GFAS_3day_vec[4],post_MaySep_TROPOMI_rep_QFED_3day_vec[4],15.5,1)
+plt.text(17.5,-20/1000.,'3 d opt\nw/ rep err',ha='center',va='top',fontsize=9)
 # ----------
-plot_section(post_MaySep_TROPOMI_GFED_7day_vec[4],post_MaySep_TROPOMI_GFAS_7day_vec[4],post_MaySep_TROPOMI_QFED_7day_vec[4],20.5,1)
-plt.text(22.5,-20/1000.,'7 d opt\nw/out rep err',ha='center',va='top',fontsize=9)
+plot_section(post_MaySep_TROPOMI_GFED_3day_vec[4],post_MaySep_TROPOMI_GFAS_3day_vec[4],post_MaySep_TROPOMI_QFED_3day_vec[4],20.5,1)
+plt.text(22.5,-20/1000.,'3 d opt\nw/out rep err',ha='center',va='top',fontsize=9)
 # ----------
 #
 plt.ylim([0,0.95])

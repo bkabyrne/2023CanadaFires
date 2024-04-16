@@ -1,0 +1,40 @@
+from netCDF4 import Dataset
+import numpy as np
+import matplotlib.pyplot as plt
+
+year =	np.array([2016,2017,2018,2019,2020,2021])
+forest_sink = np.array([-37.2,-37.1,-36.5,-37.4,-35.9,-36.3])
+HWP = np.array([37.3,37.2,38.0,35.5,35.0,34.8])
+natural_disturbance = np.array([32.7,65.5,73.6,46.6,5.7,84.5])
+total_co2 = np.array([152.1,154.5,157.4,157.8,142.6,146.5])
+
+
+fig = plt.figure(2,figsize=(6*0.95,4*0.95),dpi=300)
+ax1 = fig.add_axes([0.15,0.1,0.8,0.8])
+l1=plt.plot(year,HWP,color='peru')
+plt.plot(year,HWP,'o',color='peru',markersize=4)
+plt.text(2016.15,30,'Harvested Wood Products',color='peru',ha='left',va='top')
+l2=plt.plot(year,forest_sink,color='green')
+plt.plot(year,forest_sink,'o',color='green',markersize=4)
+plt.text(2016.15,-42,'Forest Land',color='green',ha='left',va='top')
+l3=plt.plot(year,natural_disturbance,'--',color='red')
+plt.plot(year,natural_disturbance,'o',color='red',markersize=4)
+plt.text(2017.15,80,'Natural disturbances',color='red',ha='left',va='bottom')
+plt.ylabel('carbon flux (TgC)')
+l4=plt.plot(year,total_co2,color='grey')
+plt.plot(year,total_co2,'o',color='grey',markersize=4)
+plt.text(2016.15,160,'Total CO$_2$ emissions',color='grey',ha='left',va='bottom')
+# Canadian Fires
+plt.plot(2023,421.3,'ko')
+l5=plt.plot([2023,2023],[387.5,460.8],'k')
+plt.plot([2022.8,2023.2],[460.8,460.8],'k')
+plt.plot([2022.8,2023.2],[387.5,387.5],'k')
+plt.plot([2015,2024],[0,0],'k:')
+plt.text(2020.15,425,'2023 Canadian Fires',color='k',ha='left',va='bottom')
+plt.text(2020.15,395,'(managed lands)',color='k',ha='left',va='bottom')
+#plt.legend([l1[0],l2[0],l3[0],l4[0],l5[0]],('Harvested Wood Products','Forest Land','Natural disturbances','Total CO$_2$ emissions','2023 Canadian Fires (managed lands)'))
+plt.xlim([2015.5,2023.5])
+plt.ylim([-70,475])
+plt.savefig('Figures/Inventory_Fires.png')
+plt.clf()
+plt.close()

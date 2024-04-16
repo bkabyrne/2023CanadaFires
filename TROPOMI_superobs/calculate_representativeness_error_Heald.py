@@ -201,129 +201,126 @@ def map_to_run_grid(params,doy_grid_out,lat_grid_out,lon_grid_out):
     return smooth_total_error, smooth_retrieval_error
 # ---------------------------
 
-# Finished defining functions
-
 # ============================================================================
 
+if __name__ == "__main__":
+
+    # -- Parameters for representativeness errors --
+    params = parameter_obj()
+    params.lon_range = 30 # number of lon degrees to include in range [lon_center - lon_range/2 , lon_center + lon_range/2]
+    params.lat_range = 30 # [lat_center - lat_range/2 , lat_center + lat_range/2]
+    params.doy_range = 30 # [doy_center - doy_range/2 , doy_center + doy_range/2]
+    params.lon_grid = np.arange(35)*10-170
+    params.lat_grid = np.arange(17)*10-80
+    params.doy = np.arange((27-9)*2)*5+90
+    
+    # -- Read in TROPOMI data --
+    TROPOMI_data_2019 = TROPOMI_cosamples(2019)
+    TROPOMI_data_2020 = TROPOMI_cosamples(2020)
+    TROPOMI_data_2021 = TROPOMI_cosamples(2021)
+    TROPOMI_data_2022 = TROPOMI_cosamples(2022)
+    TROPOMI_data_2023 = TROPOMI_cosamples(2023)
+
+    # -- Loop over grids and calculate the representativeness errors
+    total_error = np.zeros((np.size(params.doy),np.size(params.lat_grid),np.size(params.lon_grid)))
+    retrieval_error = np.zeros((np.size(params.doy),np.size(params.lat_grid),np.size(params.lon_grid)))
+    for lon_index, lon_center in enumerate(params.lon_grid):
+        print('lon_center')
+        print(lon_center)
+        for lat_index, lat_center in enumerate(params.lat_grid):
+            for doy_index, doy_center in enumerate(params.doy):
+                # 2019 co-samples
+                YHx_GFED_box_nm_2019, YHx_GFAS_box_nm_2019, YHx_QFED_box_nm_2019, xCOunc_box_2019 = calculate_error(TROPOMI_data_2019,params,lon_center,lat_center,doy_center)
+                YHx_box_nm_2019 = np.append(np.append(YHx_GFED_box_nm_2019,YHx_GFAS_box_nm_2019),YHx_QFED_box_nm_2019)
+                # 2020 co-samples
+                YHx_GFED_box_nm_2020, YHx_GFAS_box_nm_2020, YHx_QFED_box_nm_2020, xCOunc_box_2020 = calculate_error(TROPOMI_data_2020,params,lon_center,lat_center,doy_center)
+                YHx_box_nm_2020 = np.append(np.append(YHx_GFED_box_nm_2020,YHx_GFAS_box_nm_2020),YHx_QFED_box_nm_2020)
+                # 2021 co-samples
+                YHx_GFED_box_nm_2021, YHx_GFAS_box_nm_2021, YHx_QFED_box_nm_2021, xCOunc_box_2021 = calculate_error(TROPOMI_data_2021,params,lon_center,lat_center,doy_center)
+                YHx_box_nm_2021 = np.append(np.append(YHx_GFED_box_nm_2021,YHx_GFAS_box_nm_2021),YHx_QFED_box_nm_2021)
+                # 2022 co-samples
+                YHx_GFED_box_nm_2022, YHx_GFAS_box_nm_2022, YHx_QFED_box_nm_2022, xCOunc_box_2022 = calculate_error(TROPOMI_data_2022,params,lon_center,lat_center,doy_center)
+                YHx_box_nm_2022 = np.append(np.append(YHx_GFED_box_nm_2022,YHx_GFAS_box_nm_2022),YHx_QFED_box_nm_2022)
+                # 2023 co-samples
+                YHx_GFED_box_nm_2023, YHx_GFAS_box_nm_2023, YHx_QFED_box_nm_2023, xCOunc_box_2023 = calculate_error(TROPOMI_data_2023,params,lon_center,lat_center,doy_center)
+                YHx_box_nm_2023 = np.append(np.append(YHx_GFED_box_nm_2023,YHx_GFAS_box_nm_2023),YHx_QFED_box_nm_2023)
+
+                # Append all of the data
+                YHx_box_nm_all_temp = np.append(np.append(np.append(np.append(YHx_box_nm_2019,YHx_box_nm_2020),YHx_box_nm_2021),YHx_box_nm_2022),YHx_box_nm_2023)
+                YHx_box_nm_all = YHx_box_nm_all_temp[np.where(np.isfinite(YHx_box_nm_all_temp))]
+                II = np.where(np.isfinite(YHx_box_nm_all))
+                if np.size(YHx_box_nm_all[II])>0:
+                    total_error[doy_index,lat_index,lon_index] = (np.percentile(YHx_box_nm_all[II],75)-np.percentile(YHx_box_nm_all[II],25))/1.35
+
+                xCOunc_box_all_temp = np.append(np.append(np.append(np.append(xCOunc_box_2019,xCOunc_box_2020),xCOunc_box_2021),xCOunc_box_2022),xCOunc_box_2023)
+                xCOunc_box_all = xCOunc_box_all_temp[np.where(np.isfinite(xCOunc_box_all_temp))]
+                II = np.where(np.isfinite(xCOunc_box_all))
+                if np.size(xCOunc_box_all[II])>0:
+                    retrieval_error[doy_index,lat_index,lon_index] = (np.percentile(xCOunc_box_all[II],75)-np.percentile(xCOunc_box_all[II],25))/1.35
 
 
-# -- Parameters for representativeness errors --
-params = parameter_obj()
-params.lon_range = 30 # number of lon degrees to include in range [lon_center - lon_range/2 , lon_center + lon_range/2]
-params.lat_range = 30 # [lat_center - lat_range/2 , lat_center + lat_range/2]
-params.doy_range = 30 # [doy_center - doy_range/2 , doy_center + doy_range/2]
-params.lon_grid = np.arange(35)*10-170
-params.lat_grid = np.arange(17)*10-80
-params.doy = np.arange((27-9)*2)*5+90
 
 
-# -- Read in TROPOMI data --
-TROPOMI_data_2019 = TROPOMI_cosamples(2019)
-TROPOMI_data_2020 = TROPOMI_cosamples(2020)
-TROPOMI_data_2021 = TROPOMI_cosamples(2021)
-TROPOMI_data_2022 = TROPOMI_cosamples(2022)
-TROPOMI_data_2023 = TROPOMI_cosamples(2023)
-
-# -- Loop over grids and calculate the representativeness errors
-total_error = np.zeros((np.size(params.doy),np.size(params.lat_grid),np.size(params.lon_grid)))
-retrieval_error = np.zeros((np.size(params.doy),np.size(params.lat_grid),np.size(params.lon_grid)))
-for lon_index, lon_center in enumerate(params.lon_grid):
-    print('lon_center')
-    print(lon_center)
-    for lat_index, lat_center in enumerate(params.lat_grid):
-        for doy_index, doy_center in enumerate(params.doy):
-            # 2019 co-samples
-            YHx_GFED_box_nm_2019, YHx_GFAS_box_nm_2019, YHx_QFED_box_nm_2019, xCOunc_box_2019 = calculate_error(TROPOMI_data_2019,params,lon_center,lat_center,doy_center)
-            YHx_box_nm_2019 = np.append(np.append(YHx_GFED_box_nm_2019,YHx_GFAS_box_nm_2019),YHx_QFED_box_nm_2019)
-            # 2020 co-samples
-            YHx_GFED_box_nm_2020, YHx_GFAS_box_nm_2020, YHx_QFED_box_nm_2020, xCOunc_box_2020 = calculate_error(TROPOMI_data_2020,params,lon_center,lat_center,doy_center)
-            YHx_box_nm_2020 = np.append(np.append(YHx_GFED_box_nm_2020,YHx_GFAS_box_nm_2020),YHx_QFED_box_nm_2020)
-            # 2021 co-samples
-            YHx_GFED_box_nm_2021, YHx_GFAS_box_nm_2021, YHx_QFED_box_nm_2021, xCOunc_box_2021 = calculate_error(TROPOMI_data_2021,params,lon_center,lat_center,doy_center)
-            YHx_box_nm_2021 = np.append(np.append(YHx_GFED_box_nm_2021,YHx_GFAS_box_nm_2021),YHx_QFED_box_nm_2021)
-            # 2022 co-samples
-            YHx_GFED_box_nm_2022, YHx_GFAS_box_nm_2022, YHx_QFED_box_nm_2022, xCOunc_box_2022 = calculate_error(TROPOMI_data_2022,params,lon_center,lat_center,doy_center)
-            YHx_box_nm_2022 = np.append(np.append(YHx_GFED_box_nm_2022,YHx_GFAS_box_nm_2022),YHx_QFED_box_nm_2022)
-            # 2023 co-samples
-            YHx_GFED_box_nm_2023, YHx_GFAS_box_nm_2023, YHx_QFED_box_nm_2023, xCOunc_box_2023 = calculate_error(TROPOMI_data_2023,params,lon_center,lat_center,doy_center)
-            YHx_box_nm_2023 = np.append(np.append(YHx_GFED_box_nm_2023,YHx_GFAS_box_nm_2023),YHx_QFED_box_nm_2023)
-
-            # Append all of the data
-            YHx_box_nm_all_temp = np.append(np.append(np.append(np.append(YHx_box_nm_2019,YHx_box_nm_2020),YHx_box_nm_2021),YHx_box_nm_2022),YHx_box_nm_2023)
-            YHx_box_nm_all = YHx_box_nm_all_temp[np.where(np.isfinite(YHx_box_nm_all_temp))]
-            II = np.where(np.isfinite(YHx_box_nm_all))
-            if np.size(YHx_box_nm_all[II])>0:
-                total_error[doy_index,lat_index,lon_index] = (np.percentile(YHx_box_nm_all[II],75)-np.percentile(YHx_box_nm_all[II],25))/1.35
-
-            xCOunc_box_all_temp = np.append(np.append(np.append(np.append(xCOunc_box_2019,xCOunc_box_2020),xCOunc_box_2021),xCOunc_box_2022),xCOunc_box_2023)
-            xCOunc_box_all = xCOunc_box_all_temp[np.where(np.isfinite(xCOunc_box_all_temp))]
-            II = np.where(np.isfinite(xCOunc_box_all))
-            if np.size(xCOunc_box_all[II])>0:
-                retrieval_error[doy_index,lat_index,lon_index] = (np.percentile(xCOunc_box_all[II],75)-np.percentile(xCOunc_box_all[II],25))/1.35
-
-
-
-
-# -- Read 2x25 lat/lon grid --
-nc_out = '/nobackup/bbyrne1/MERRA2/2x2.5/2023/05/MERRA2.20230503.I3.2x25.nc4'
-f = Dataset(nc_out,'r')
-lat_grid_2x25 = f.variables['lat'][:]
-lon_grid_2x25 = f.variables['lon'][:]
-f.close()
-doy_grid_2x25 = np.arange(273-90-1)+90 # grid of DOY centers (Only consider Apr 1 to Sep 30)
-
-# Map error array to output grid
-smooth_total_error, smooth_retrieval_error = map_to_run_grid(params,doy_grid_2x25,lat_grid_2x25,lon_grid_2x25)
-
+    # -- Read 2x25 lat/lon grid --
+    nc_out = '/nobackup/bbyrne1/MERRA2/2x2.5/2023/05/MERRA2.20230503.I3.2x25.nc4'
+    f = Dataset(nc_out,'r')
+    lat_grid_2x25 = f.variables['lat'][:]
+    lon_grid_2x25 = f.variables['lon'][:]
+    f.close()
+    doy_grid_2x25 = np.arange(273-90-1)+90 # grid of DOY centers (Only consider Apr 1 to Sep 30)
+    
+    # Map error array to output grid
+    smooth_total_error, smooth_retrieval_error = map_to_run_grid(params,doy_grid_2x25,lat_grid_2x25,lon_grid_2x25)
+    
                 
-# Write data
-file_out = 'Daily_unc_Heald.nc'
-print(file_out)
-dataset = Dataset(file_out,'w')
-days = dataset.createDimension('day',np.size(doy_grid_2x25))
-lats = dataset.createDimension('lat',np.size(lat_grid_2x25))
-lons = dataset.createDimension('lon',np.size(lon_grid_2x25))
-longitudes = dataset.createVariable('longitude', np.float64, ('lon',))
-longitudes[:] = lon_grid_2x25
-latitudes = dataset.createVariable('latitude', np.float64, ('lat',))
-latitudes[:] = lat_grid_2x25
-doys = dataset.createVariable('DOY', np.float64, ('day',))
-doys[:] = doy_grid_2x25
-unc_Healds = dataset.createVariable('unc_Heald', np.float64, ('day','lat','lon'))
-unc_Healds[:,:,:] = smooth_total_error
-unc_obss = dataset.createVariable('unc_obs', np.float64, ('day','lat','lon'))
-unc_obss[:,:,:] = smooth_retrieval_error
-dataset.close()
+    # Write data
+    file_out = 'Daily_unc_Heald.nc'
+    print(file_out)
+    dataset = Dataset(file_out,'w')
+    days = dataset.createDimension('day',np.size(doy_grid_2x25))
+    lats = dataset.createDimension('lat',np.size(lat_grid_2x25))
+    lons = dataset.createDimension('lon',np.size(lon_grid_2x25))
+    longitudes = dataset.createVariable('longitude', np.float64, ('lon',))
+    longitudes[:] = lon_grid_2x25
+    latitudes = dataset.createVariable('latitude', np.float64, ('lat',))
+    latitudes[:] = lat_grid_2x25
+    doys = dataset.createVariable('DOY', np.float64, ('day',))
+    doys[:] = doy_grid_2x25
+    unc_Healds = dataset.createVariable('unc_Heald', np.float64, ('day','lat','lon'))
+    unc_Healds[:,:,:] = smooth_total_error
+    unc_obss = dataset.createVariable('unc_obs', np.float64, ('day','lat','lon'))
+    unc_obss[:,:,:] = smooth_retrieval_error
+    dataset.close()
+    
 
-
-# Plots to check output
-for iday in range(np.size(doy_grid_2x25)):
-    print(iday)
-    fig = plt.figure(3,figsize=(24, 8), dpi=80)
-    #x
-    m = Basemap(projection='robin',lon_0=0,resolution='c')
-    xx, yy = meshgrid(lon_grid_2x25, lat_grid_2x25)
-    #
-    ax1 = fig.add_axes([0.0+0./3., 0.02, 0.9/3., 0.9/1.])
-    m.pcolormesh(xx,yy,ma.masked_invalid(smooth_total_error[iday,:,:]),cmap='CMRmap_r',vmin=0,vmax=35,latlon=True)
-    m.drawcoastlines()
-    m.colorbar()
-    plt.title('std(Y-Hx)')
-    #
-    ax1 = fig.add_axes([0.0+1./3., 0.02, 0.9/3., 0.9/1.])
-    m.pcolormesh(xx,yy,ma.masked_invalid(smooth_retrieval_error[iday,:,:]),cmap='CMRmap_r',vmin=0,vmax=35,latlon=True)
-    m.drawcoastlines()
-    m.colorbar()
-    plt.title('retrieval unc')
-    #
-    ax1 = fig.add_axes([0.0+2./3., 0.02, 0.9/3., 0.9/1.])
-    m.pcolormesh(xx,yy,ma.masked_invalid((smooth_retrieval_error[iday,:,:])/smooth_total_error[iday,:,:]),cmap='CMRmap_r',vmin=0,vmax=1)
-    m.drawcoastlines()
-    m.colorbar()
-    plt.title('retrieval / std')
-    #
-    plt.savefig('uncertainty_Heald/uncertainty_Heald_slide_'+str(iday+1).zfill(2)+'.jpg')
-    plt.clf()
-    plt.close()
+    # Plots to check output
+    for iday in range(np.size(doy_grid_2x25)):
+        print(iday)
+        fig = plt.figure(3,figsize=(24, 8), dpi=80)
+        #x
+        m = Basemap(projection='robin',lon_0=0,resolution='c')
+        xx, yy = meshgrid(lon_grid_2x25, lat_grid_2x25)
+        #
+        ax1 = fig.add_axes([0.0+0./3., 0.02, 0.9/3., 0.9/1.])
+        m.pcolormesh(xx,yy,ma.masked_invalid(smooth_total_error[iday,:,:]),cmap='CMRmap_r',vmin=0,vmax=35,latlon=True)
+        m.drawcoastlines()
+        m.colorbar()
+        plt.title('std(Y-Hx)')
+        #
+        ax1 = fig.add_axes([0.0+1./3., 0.02, 0.9/3., 0.9/1.])
+        m.pcolormesh(xx,yy,ma.masked_invalid(smooth_retrieval_error[iday,:,:]),cmap='CMRmap_r',vmin=0,vmax=35,latlon=True)
+        m.drawcoastlines()
+        m.colorbar()
+        plt.title('retrieval unc')
+        #
+        ax1 = fig.add_axes([0.0+2./3., 0.02, 0.9/3., 0.9/1.])
+        m.pcolormesh(xx,yy,ma.masked_invalid((smooth_retrieval_error[iday,:,:])/smooth_total_error[iday,:,:]),cmap='CMRmap_r',vmin=0,vmax=1)
+        m.drawcoastlines()
+        m.colorbar()
+        plt.title('retrieval / std')
+        #
+        plt.savefig('uncertainty_Heald/uncertainty_Heald_slide_'+str(iday+1).zfill(2)+'.jpg')
+        plt.clf()
+        plt.close()
 
 
