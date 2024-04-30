@@ -9,12 +9,11 @@
 #
 ######################################################
 
+Copyright 2024, by the California Institute of Technology. ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged. Any commercial use must be negotiated with the Office of Technology Transfer at the California Institute of Technology.
 
 Overview:
 
 This repository contains python programs used to 1. Process TROPOMI CO retrievals (./TROPOMI_superobs), 2. generate the input data for the CO inversions (./CO_inversions/Prepare_inversion), 3. process the output from the CO inversions (CO_inversions/Process_output), and 4. make figures shown in the paper (plot_figures). Climate data were downloaded as described in the methods sections. Inverse estimates can be reproduced using the GEOS-Chem adjoint, which can be downloaded from here: http://wiki.seas.harvard.edu/geos-chem/index.php/Quick_Start_Guide, following the inversion set-up described in the methods. All of the results of the manuscript can be reproduced from the data provided. The python codes reproduce the figures from the manuscript.
-
-
 
 Required content:
 
@@ -33,3 +32,4 @@ Python routines in main directory can be run to re-create all of the figures in 
 4. Instructions for use
 
 Execute each python routine and the Figures shown in the manuscript and supplement will be written to the Figures sub-directory. The header of each python code describes the figures made by that particular code.
+

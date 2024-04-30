@@ -8,10 +8,7 @@ import numpy.ma as ma
 from math import pi, cos, radians
 import numpy.matlib
 
-
-
 def read_obs(nc_file_TROPOMI,nc_file_GFED,nc_file_GFAS,nc_file_QFED,doy):
-
 
     f=Dataset(nc_file_TROPOMI,mode='r')
     longitude=f.variables['longitude'][:]
