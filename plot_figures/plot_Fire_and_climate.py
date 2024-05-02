@@ -18,15 +18,15 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 
 
-# *******************************************************   
-# -------- plot_Fire_and_climate.py                            
-#                                                           
-# This code processes data and plots Figures 3 and S3        
-#                                                           
-# contact: Brendan Byrne                                    
-# email: brendan.k.byrne@jpl.nasa.gov                       
-#                                                           
-# *******************************************************   
+'''
+-------- plot_Fire_and_climate.py                            
+                                                           
+This code processes data and plots Figures 3 and S6        
+                                                          
+contact: Brendan Byrne                                    
+email: brendan.k.byrne@jpl.nasa.gov                       
+
+'''
 
 
 nc_out = './data_for_figures/GFED_T2MZscore_precipZscore.nc'
@@ -46,6 +46,7 @@ pr_hist = f.variables['pr_hist'][:] # kg/m2/s = mm/s
 pr_ssp245 = f.variables['pr_ssp245'][:]
 pr_ssp585 = f.variables['pr_ssp585'][:]
 f.close()
+# Append historical simulation with projection
 pr_hist_ssp245 = np.append(pr_hist[1800:1980,:,:],pr_ssp245,axis=0)
 pr_hist_ssp585 = np.append(pr_hist[1800:1980,:,:],pr_ssp585,axis=0)
 
@@ -55,9 +56,11 @@ tas_hist = f.variables['tas_hist'][:]
 tas_ssp245 = f.variables['tas_ssp245'][:]
 tas_ssp585 = f.variables['tas_ssp585'][:]
 f.close()
+# Append historical simulation with projection
 tas_hist_ssp245 = np.append(tas_hist[1800:1980,:,:],tas_ssp245,axis=0)
 tas_hist_ssp585 = np.append(tas_hist[1800:1980,:,:],tas_ssp585,axis=0)
 
+# Calculate cumulative precip and May-Sep Temperature
 pr_hist_ssp245_yr = np.zeros((101,60,110))
 pr_hist_ssp585_yr = np.zeros((101,60,110))
 tas_hist_ssp245_yr = np.zeros((101,60,110))
@@ -69,8 +72,9 @@ for i in range(101):
     tas_hist_ssp585_yr[i,:,:] = np.mean(tas_hist_ssp585[int(i*12.+4):int(i*12.+10),:,:],0)
 
 
-nc_out = './data_for_figures/Reanalysis_std_regrid.nc'
-f = Dataset(nc_out,'r')
+# Standard deviation of reanalysis datasets
+nc_in = './data_for_figures/Reanalysis_std_regrid.nc'
+f = Dataset(nc_in,'r')
 precip_std_mm_JanSep = f.variables['precip_std'][:]  # convert mm per Jan-Sep
 T2M_std = f.variables['T2M_std'][:]
 f.close()
@@ -89,6 +93,7 @@ lat_MERRA2 = f.variables['lat'][:]
 Forest_mask = f.variables['mask'][:]
 f.close()
 # ===================================
+# Regrid forest mask
 Forest_mask_CMIP = np.zeros((np.size(lat),np.size(lon)))
 for i in range(np.size(lat)):
     iii = np.argmin(np.abs(lat_MERRA2-lat[i]))
@@ -96,9 +101,9 @@ for i in range(np.size(lat)):
         jjj = np.argmin(np.abs(lon_MERRA2-lon[j]))
         #
         Forest_mask_CMIP[i,j] = Forest_mask[iii,jjj]
-
+        
+# Apply forest mask
 Forest_mask_CMIP_arr = np.repeat(Forest_mask_CMIP[np.newaxis, :, :], 101, axis=0)
-
 pr_hist_ssp245_yr[np.where(Forest_mask_CMIP_arr != 1)] = np.nan
 pr_hist_ssp585_yr[np.where(Forest_mask_CMIP_arr != 1)] = np.nan
 tas_hist_ssp245_yr[np.where(Forest_mask_CMIP_arr != 1)] = np.nan
@@ -134,7 +139,8 @@ for d in range(10):
     pr_decade_ssp585_mean_zscore[d] = np.nanmean(pr_hist_ssp585_zscore[d*10:(d+1)*10,:,:].flatten())
     tas_decade_ssp585_mean_zscore[d] = np.nanmean(tas_hist_ssp585_zscore[d*10:(d+1)*10,:,:].flatten())
 
-
+    
+# Create grids for plotting
 T2M_zval = np.arange(33)/2.-8
 precip_zval = np.arange(33)/2.-8
 #                                                                                                                             
@@ -157,28 +163,18 @@ plt.yticks([-3,-2,-1,0,1,2,3])
 plt.xticks([-3,-2,-1,0,1,2,3])
 ax1.set_xticklabels(['-3','-2','-1','0','1','2','3'])
 ax1.set_yticklabels(['-3','-2','-1','0','1','2','3'])
-#plt.text(0,5.015-0.5,'(a) May-Sep GFED4.1s Fire',va='bottom',ha='center')
-#plt.text(0,4.015-0.5,'CO$_2$+CO ($\mathrm{gC \, m^{-2}}$)',va='bottom',ha='center')
 plt.title('Fire and climate anomalies')
 #
 for i in range(20):
     l1=plt.plot(precip_zscore_mean[i],T2M_zscore_mean[i],'kx', markersize=10,mew=2.0,zorder=1)
 l2=plt.plot(precip_zscore_mean[20],T2M_zscore_mean[20],'rx', markersize=10,mew=2.5)
 legend=plt.legend([l1[0],l2[0]],('2003-2022','2023'),loc='lower left',frameon=True,handletextpad=0.5,labelspacing=0.4,handlelength=1.,ncol=2,bbox_to_anchor=(-0.0075, -0.0175),columnspacing=0.5,fontsize=9,framealpha=1.0)
-#
-#cmap_test1 = plt.get_cmap('YlGnBu')
-#colors2 = cmap_test1(np.linspace(0, 1, 10))
 
 cmap1 = plt.cm.YlGnBu
 bounds1 = [2000,2010,2020,2030,2040,2050,2060,2070,2080,2090,2100]
 norm1 = mpl.colors.BoundaryNorm(bounds1, cmap1.N)
 
-#test = np.ones((10,4))
-#test[:,3]=1
-#colors2 = (colors + test)/2.
-#for i in range(10):
 tt2=plt.scatter(pr_decade_ssp245_mean_zscore,tas_decade_ssp245_mean_zscore,c=np.arange(10)*10.+2005,s=55.,edgecolors='black',zorder=2,cmap=cmap1,norm=norm1)
-#sm = plt.cm.ScalarMappable(cmap=colormap)
 #
 ax1 = fig.add_axes([0.05/1.+0.021+0.601/1.,0.158,0.025,0.75])
 cbar=plt.colorbar(tt,cax=ax1,extend='both',ticks=[])
@@ -220,8 +216,6 @@ plt.yticks([-3,-2,-1,0,1,2,3])
 plt.xticks([-3,-2,-1,0,1,2,3])
 ax1.set_xticklabels(['-3','-2','-1','0','1','2','3'])
 ax1.set_yticklabels(['-3','-2','-1','0','1','2','3'])
-#plt.text(0,5.015-0.5,'(a) May-Sep GFED4.1s Fire',va='bottom',ha='center')
-#plt.text(0,4.015-0.5,'CO$_2$+CO ($\mathrm{gC \, m^{-2}}$)',va='bottom',ha='center')
 plt.title('Fire and climate anomalies')
 #
 for i in range(20):
@@ -229,19 +223,12 @@ for i in range(20):
 l2=plt.plot(precip_zscore_mean[20],T2M_zscore_mean[20],'rx', markersize=10,mew=2.5)
 legend=plt.legend([l1[0],l2[0]],('2003-2022','2023'),loc='lower left',frameon=True,handletextpad=0.5,labelspacing=0.4,handlelength=1.,ncol=2,bbox_to_anchor=(-0.0075, -0.0175),columnspacing=0.5,fontsize=9,framealpha=1.0)
 #
-#cmap_test1 = plt.get_cmap('YlGnBu')
-#colors2 = cmap_test1(np.linspace(0, 1, 10))
 
 cmap1 = plt.cm.YlGnBu
 bounds1 = [2000,2010,2020,2030,2040,2050,2060,2070,2080,2090,2100]
 norm1 = mpl.colors.BoundaryNorm(bounds1, cmap1.N)
 
-#test = np.ones((10,4))
-#test[:,3]=1
-#colors2 = (colors + test)/2.
-#for i in range(10):
 tt2=plt.scatter(pr_decade_ssp585_mean_zscore,tas_decade_ssp585_mean_zscore,c=np.arange(10)*10.+2005,s=55.,edgecolors='black',zorder=2,cmap=cmap1,norm=norm1)
-#sm = plt.cm.ScalarMappable(cmap=colormap)
 #
 ax1 = fig.add_axes([0.05/1.+0.021+0.601/1.,0.158,0.025,0.75])
 cbar=plt.colorbar(tt,cax=ax1,extend='both',ticks=[])
@@ -264,6 +251,6 @@ plt.text(1.15,2085,'2080s',ha='left',va='center',fontsize=8.5)
 plt.text(1.15,2095,'2090s',ha='left',va='center',fontsize=8.5)
 plt.text(5.5,2050,'Decade of SSP5-8.5 projection',ha='center',va='center',rotation=270)
 #
-plt.savefig('Figures/Byrne_etal_FigS3.png')
+plt.savefig('Figures/Byrne_etal_FigS6.png')
 
 

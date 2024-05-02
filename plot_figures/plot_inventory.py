@@ -2,6 +2,14 @@ from netCDF4 import Dataset
 import numpy as np
 import matplotlib.pyplot as plt
 
+'''
+------- plot_inventory
+
+Makes Fig. 4 from the paper (Inventory_Fires.png)
+
+'''
+
+# Define the data
 year =	np.array([2016,2017,2018,2019,2020,2021])
 forest_sink = np.array([-37.2,-37.1,-36.5,-37.4,-35.9,-36.3])
 HWP = np.array([37.3,37.2,38.0,35.5,35.0,34.8])
@@ -9,6 +17,7 @@ natural_disturbance = np.array([32.7,65.5,73.6,46.6,5.7,84.5])
 total_co2 = np.array([152.1,154.5,157.4,157.8,142.6,146.5])
 
 
+# Plot the data
 fig = plt.figure(2,figsize=(6*0.95,4*0.95),dpi=300)
 ax1 = fig.add_axes([0.15,0.1,0.8,0.8])
 l1=plt.plot(year,HWP,color='peru')
@@ -32,7 +41,6 @@ plt.plot([2022.8,2023.2],[387.5,387.5],'k')
 plt.plot([2015,2024],[0,0],'k:')
 plt.text(2020.15,425,'2023 Canadian Fires',color='k',ha='left',va='bottom')
 plt.text(2020.15,395,'(managed lands)',color='k',ha='left',va='bottom')
-#plt.legend([l1[0],l2[0],l3[0],l4[0],l5[0]],('Harvested Wood Products','Forest Land','Natural disturbances','Total CO$_2$ emissions','2023 Canadian Fires (managed lands)'))
 plt.xlim([2015.5,2023.5])
 plt.ylim([-70,475])
 plt.savefig('Figures/Inventory_Fires.png')

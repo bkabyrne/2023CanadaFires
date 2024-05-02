@@ -15,15 +15,15 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 from mpl_toolkits.basemap import Basemap, cm, maskoceans
 
-# *******************************************************
-# -------- plot_climate_anomalies.py
-#
-# This code processes data and plots Figures 2, S3 and S4
-#
-# contact: Brendan Byrne
-# email: brendan.k.byrne@jpl.nasa.gov
-#
-# *******************************************************
+'''
+-------- plot_climate_anomalies.py
+
+This code processes data and plots Figures 2, S4 and S5
+
+contact: Brendan Byrne
+email: brendan.k.byrne@jpl.nasa.gov
+
+'''
 
 days_in_month = np.array([31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31])
 days_in_month_cum = np.zeros(13)
@@ -317,7 +317,7 @@ ax1 = fig.add_axes([0.09+0.025+0.04+0.04+0.007, 0.0290, 0.03, 0.84/4.])
 cbar = plt.colorbar(tt,cax=ax1,extend='both',location='left',label='Fires ($\mathrm{gC \, m^{-2}}$)',ticks=[0,1,2,3,4])
 cbar.ax.set_yticklabels(['$10^0$', '$10^1$', '$10^2$', '$10^3$', '$10^4$'])
 #                                                                                
-plt.savefig('Figures/Byrne_etal_FigS3.png', dpi=300)
+plt.savefig('Figures/Byrne_etal_FigS4.png', dpi=300)
 
 
 
@@ -480,4 +480,4 @@ plt.xticks(days_in_month_cum+1)
 ax1.set_xticklabels(['J','F','M','A','M','J','J','A','S','O','N','D','J'])
 ax1.set_yticklabels([])
 #
-plt.savefig('Figures/Byrne_etal_FigS4.png', dpi=300)
+plt.savefig('Figures/Byrne_etal_FigS5.png', dpi=300)

@@ -16,15 +16,15 @@ from pylab import *
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 
-# *******************************************************
-# -------- plot_FigS2.py
-#                                                         
-# This code processes data and plots Figure S2
-#                                                         
-# contact: Brendan Byrne                                  
-# email: brendan.k.byrne@jpl.nasa.gov                     
-#                                                         
-# *******************************************************
+'''
+-------- plot_FigS3.py
+                                                         
+This code processes data and plots Figure S3
+                                                         
+contact: Brendan Byrne                                  
+email: brendan.k.byrne@jpl.nasa.gov                     
+                                                        
+'''
 
 #
 nc_out = './data_for_figures/Canada_forest_mask.nc'
@@ -313,5 +313,5 @@ for i in range(44):
     plt.text(1980.5+i,0,str(int((1980+i)-100*np.floor((1980+i)/100.))).zfill(2),ha='center',va='top',rotation=90,fontsize=7.5)#    plt.text(1980.5+i,0,str((1980+i)-100*np.floor((1980+i)/100.)),ha='center',va='top',rotation=90,fontsize=8)
     #plt.text(1980.5+i,0,str(1980+i),ha='center',va='top',rotation=90,fontsize=8)
 plt.text(1980,1,'(ii)',va='top',ha='left')
-plt.savefig('Figures/Byrne_etal_FigS2.png')
+plt.savefig('Figures/Byrne_etal_FigS3.png')
 
