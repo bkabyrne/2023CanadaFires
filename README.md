@@ -1,9 +1,9 @@
 ## README
 
-** Code to reproduce the results of "Unprecedented Canadian forest fire carbon emissions during 2023" **
+**Code to reproduce the results of "Unprecedented Canadian forest fire carbon emissions during 2023"**
 
-** contact: Brendan Byrne **
-** email: brendan.k.byrne@jpl.nasa.gov **
+**contact: Brendan Byrne**
+**email: brendan.k.byrne@jpl.nasa.gov**
 
 Copyright 2024, by the California Institute of Technology. ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged. Any commercial use must be negotiated with the Office of Technology Transfer at the California Institute of Technology.
 
@@ -14,16 +14,16 @@ This repository contains python programs used to 1. Process TROPOMI CO retrieval
 # Contents:
 
 Contents of ./plot_figures
-- ** plot_Fire_emissions_revised.py: ** Creates figures 1, S1 and S2
-- ** plot_climate_anomalies.py: ** Creates figures 2, S4 and S5
-- ** plot_Fire_and_climate.py: ** Creates figures 3 and S6
-- ** plot_inventory.py: ** Creates figure 4
-- ** plot_FigS3.py ** Creates figure S3
-- ** plot_posterior_TROPOMI_maps.py ** Creates figures S7-S8
-- ** plot_TCCON_cosamples.py ** Creates figures S9-S10
-- ** plt_CMPI5_data.py: ** Creates figure S11
-- ** plot_FireMaps_FigSY.py ** Creates figure S13
-- ** plot_Canada_Managed_land.py: ** Regrids managed land mask and makes some plots (which are combined to make Fig. S12)
+- **plot_Fire_emissions_revised.py:** Creates figures 1, S1 and S2
+- **plot_climate_anomalies.py:** Creates figures 2, S4 and S5
+- **plot_Fire_and_climate.py:** Creates figures 3 and S6
+- **plot_inventory.py:** Creates figure 4
+- **plot_FigS3.py** Creates figure S3
+- **plot_posterior_TROPOMI_maps.py** Creates figures S7-S8
+- **plot_TCCON_cosamples.py** Creates figures S9-S10
+- **plt_CMPI5_data.py:** Creates figure S11
+- **plot_FireMaps_FigSY.py** Creates figure S13
+- **plot_Canada_Managed_land.py:** Regrids managed land mask and makes some plots (which are combined to make Fig. S12)
 
 
 
