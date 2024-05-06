@@ -18,60 +18,63 @@ from sklearn.metrics import r2_score
 import numpy as np
 from scipy.interpolate import griddata
 
-# #####################################################   
-#  Re-grid the QFED CO emissions and write the data in   
-#  so that it can be read by CMS-Flux                     
-# #####################################################
+'''
+----- regrid_QFED_to_2x25.py
 
+Re-grid the QFED CO emissions and write the data in   
+so that it can be read by CMS-Flux                     
 
-# --- Read constants ---                                                              
-file_nc = '/u/bbyrne1/BiomassBurning_datasets/QFED_v2.6r1_0.25res/Y2019/M01/qfed2.emis_co.061.20190101.nc4'
-f=Dataset(file_nc,mode='r')
-lon = f.variables['lon'][:]
-lat = f.variables['lat'][:]
-f.close()
-lat_grid_size = 0.25
-lon_grid_size = 0.3125
-lat_inventory_edges = np.append(lat-lat_grid_size/2.,lat[-1]+lat_grid_size/2.)
-lon_inventory_edges = np.append(lon-lon_grid_size/2.,lon[-1]+lon_grid_size/2.)
-#
-nc_out = '/nobackup/bbyrne1/MERRA2/2x2.5/2023/05/MERRA2.20230503.I3.2x25.nc4'
-f = Dataset(nc_out,'r')
-lat_2x25 = f.variables['lat'][:]
-lon_2x25 = f.variables['lon'][:]
-f.close()
-# ------
+'''
 
-# --- Calculate area of grids --- 
-earth_radius = 6371009 # in meters
-lat_dist0 = pi * earth_radius / 180.0
-y = lon_2x25*0. + 2.0 * lat_dist0
-x= lat_2x25*0.
-for i in range(np.size(lat_2x25)):
-    x[i]= 2.5 * lat_dist0 * cos(radians(lat_2x25[i]))
-area_2x25 = np.zeros((np.size(x),np.size(y)))
-for i in range(np.size(y)):
-    for j in range(np.size(x)):
-        area_2x25[j,i] = np.abs(x[j]*y[i])
-#
-lat_dist0 = pi * earth_radius / 180.0
-y = lon*0. + lat_grid_size * lat_dist0
-x= lat*0.
-for i in range(np.size(lat)):
-    x[i]= lon_grid_size * lat_dist0 * cos(radians(lat[i]))
-area_QFED = np.zeros((np.size(x),np.size(y)))
-for i in range(np.size(y)):
-    for j in range(np.size(x)):
-        area_QFED[j,i] = np.abs(x[j]*y[i])
-# ------
-        
+def calculate_area(lat,lon,lat_res,lon_res):
+
+    '''
+    --- Calculate area of grids --- 
+
+    inputs
+     - lat: Array of latitude centers
+     - lon: Array of longitude centers
+     - lat_res: latitude gridcell resolution
+     - lon_res: longitude gridcell resolution
+
+    outputs
+    - Area of spatial grid [m2]
+    '''
+
+    earth_radius = 6371009 # in meters
+    lat_dist0 = pi * earth_radius / 180.0
+    
+    y = lon*0. + lat_res * lat_dist0
+    x= lat*0.
+    for i in range(np.size(lat)):
+        x[i]= lon_res * lat_dist0 * cos(radians(lat[i]))
+    area = np.zeros((np.size(x),np.size(y)))
+    
+    for i in range(np.size(y)):
+        for j in range(np.size(x)):
+            area[j,i] = np.abs(x[j]*y[i])
+    
+    return area
 
         
 def regrid_QFED_2x25(year_in,days_in_month,days_in_year,lat_2x25,lon_2x25,area_2x25,lat,lon,area_QFED,lat_grid_size,lon_grid_size):
 
-    # This function reads in daily QFED fluxes, performs regriding and writes the regrided data   
+    '''
+    This function reads in daily QFED fluxes, performs regriding and writes the regrided data   
 
-    # Create arrays for day of year, month of year 
+    inputs
+     - year_in: year to regrid
+     - days_in_month: number of days in month
+     - days_in_year: number of days in year
+     - lat_2x25: latitude at 2x2.5
+     - lon_2x25: longtidue at 2x2.5
+     - area_2x25: area at 2x2.5
+     - lat: latitude native resolution
+     - lon: longitude native resolution
+     - area_QFED: area at native resolution
+     - lat_grid_size: native resolution lat grid size
+     - lon_grid_size: native resolution lon grid size
+    '''
     
     n=0
     month_arr = np.zeros(days_in_year)
@@ -174,117 +177,40 @@ def regrid_QFED_2x25(year_in,days_in_month,days_in_year,lat_2x25,lon_2x25,area_2
         dataset.close()
         # =============================================
 
-# ---------- Function calls 
 
 
-#year_in = 2002
-#days_in_month = np.array([31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31])
-#days_in_year = 365
-#regrid_QFED_2x25(year_in,days_in_month,days_in_year,lat_2x25,lon_2x25,area_2x25,lat,lon,area_QFED,lat_grid_size,lon_grid_size)
+if __name__ == "__main__":
 
-#year_in = 2003
-#days_in_month = np.array([31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31])
-#days_in_year = 365
-#regrid_QFED_2x25(year_in,days_in_month,days_in_year,lat_2x25,lon_2x25,area_2x25,lat,lon,area_QFED,lat_grid_size,lon_grid_size)
+    # --- Read constants ---                                                              
+    file_nc = '/u/bbyrne1/BiomassBurning_datasets/QFED_v2.6r1_0.25res/Y2019/M01/qfed2.emis_co.061.20190101.nc4'
+    f=Dataset(file_nc,mode='r')
+    lon = f.variables['lon'][:]
+    lat = f.variables['lat'][:]
+    f.close()
+    lat_grid_size = 0.25
+    lon_grid_size = 0.3125
+    lat_inventory_edges = np.append(lat-lat_grid_size/2.,lat[-1]+lat_grid_size/2.)
+    lon_inventory_edges = np.append(lon-lon_grid_size/2.,lon[-1]+lon_grid_size/2.)
+    #
+    nc_out = '/nobackup/bbyrne1/MERRA2/2x2.5/2023/05/MERRA2.20230503.I3.2x25.nc4'
+    f = Dataset(nc_out,'r')
+    lat_2x25 = f.variables['lat'][:]
+    lon_2x25 = f.variables['lon'][:]
+    f.close()
+    # ------
 
-#year_in = 2004 # -- LEAP YEAR
-#days_in_month = np.array([31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31])
-#days_in_year = 366
-#regrid_QFED_2x25(year_in,days_in_month,days_in_year,lat_2x25,lon_2x25,area_2x25,lat,lon,area_QFED,lat_grid_size,lon_grid_size)
+    # Calculate grid area
+    area_2x25 = calculate_area(lat_2x25,lon_2x25,2,2.5)
+    area_QFED = calculate_area(lat,lon,lat_grid_size,lon_grid_size)
 
-#year_in = 2005
-#days_in_month = np.array([31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31])
-#days_in_year = 365
-#regrid_QFED_2x25(year_in,days_in_month,days_in_year,lat_2x25,lon_2x25,area_2x25,lat,lon,area_QFED,lat_grid_size,lon_grid_size)
-
-#year_in = 2006
-#days_in_month = np.array([31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31])
-#days_in_year = 365
-#regrid_QFED_2x25(year_in,days_in_month,days_in_year,lat_2x25,lon_2x25,area_2x25,lat,lon,area_QFED,lat_grid_size,lon_grid_size)
-
-#year_in = 2007
-#days_in_month = np.array([31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31])
-#days_in_year = 365
-#regrid_QFED_2x25(year_in,days_in_month,days_in_year,lat_2x25,lon_2x25,area_2x25,lat,lon,area_QFED,lat_grid_size,lon_grid_size)
-
-#year_in = 2008 # -- LEAP YEAR
-#days_in_month = np.array([31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31])
-#days_in_year = 366
-#regrid_QFED_2x25(year_in,days_in_month,days_in_year,lat_2x25,lon_2x25,area_2x25,lat,lon,area_QFED,lat_grid_size,lon_grid_size)
-
-#year_in = 2009
-#days_in_month = np.array([31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31])
-#days_in_year = 365
-#regrid_QFED_2x25(year_in,days_in_month,days_in_year,lat_2x25,lon_2x25,area_2x25,lat,lon,area_QFED,lat_grid_size,lon_grid_size)
-
-#year_in = 2010
-#days_in_month = np.array([31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31])
-#days_in_year = 365
-#regrid_QFED_2x25(year_in,days_in_month,days_in_year,lat_2x25,lon_2x25,area_2x25,lat,lon,area_QFED,lat_grid_size,lon_grid_size)
-
-#year_in = 2011
-#days_in_month = np.array([31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31])
-#days_in_year = 365
-#regrid_QFED_2x25(year_in,days_in_month,days_in_year,lat_2x25,lon_2x25,area_2x25,lat,lon,area_QFED,lat_grid_size,lon_grid_size)
-
-#year_in = 2012 # -- LEAP YEAR
-#days_in_month = np.array([31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31])
-#days_in_year = 366
-#regrid_QFED_2x25(year_in,days_in_month,days_in_year,lat_2x25,lon_2x25,area_2x25,lat,lon,area_QFED,lat_grid_size,lon_grid_size)
-
-#year_in = 2013
-#days_in_month = np.array([31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31])
-#days_in_year = 365
-#regrid_QFED_2x25(year_in,days_in_month,days_in_year,lat_2x25,lon_2x25,area_2x25,lat,lon,area_QFED,lat_grid_size,lon_grid_size)
-
-#year_in = 2014
-#days_in_month = np.array([31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31])
-#days_in_year = 365
-#regrid_QFED_2x25(year_in,days_in_month,days_in_year,lat_2x25,lon_2x25,area_2x25,lat,lon,area_QFED,lat_grid_size,lon_grid_size)
-
-#year_in = 2015
-#days_in_month = np.array([31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31])
-#days_in_year = 365
-#regrid_QFED_2x25(year_in,days_in_month,days_in_year,lat_2x25,lon_2x25,area_2x25,lat,lon,area_QFED,lat_grid_size,lon_grid_size)
-
-#year_in = 2016 # -- LEAP YEAR
-#days_in_month = np.array([31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31])
-#days_in_year = 366
-#regrid_QFED_2x25(year_in,days_in_month,days_in_year,lat_2x25,lon_2x25,area_2x25,lat,lon,area_QFED,lat_grid_size,lon_grid_size)
-
-#year_in = 2017
-#days_in_month = np.array([31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31])
-#days_in_year = 365
-#regrid_QFED_2x25(year_in,days_in_month,days_in_year,lat_2x25,lon_2x25,area_2x25,lat,lon,area_QFED,lat_grid_size,lon_grid_size)
-
-
-
-#year_in = 2018
-#days_in_month = np.array([31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31])
-#days_in_year = 365
-#regrid_QFED_2x25(year_in,days_in_month,days_in_year,lat_2x25,lon_2x25,area_2x25,lat,lon,area_QFED,lat_grid_size,lon_grid_size)
+    # -- perform re-gridding --
     
-#year_in = 2019
-#days_in_month = np.array([31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31])
-#days_in_year = 365
-#regrid_QFED_2x25(year_in,days_in_month,days_in_year,lat_2x25,lon_2x25,area_2x25,lat,lon,area_QFED,lat_grid_size,lon_grid_size)
-
-#year_in = 2020   # -- LEAP YEAR
-#days_in_month = np.array([31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31])
-#days_in_year = 366
-#regrid_QFED_2x25(year_in,days_in_month,days_in_year,lat_2x25,lon_2x25,area_2x25,lat,lon,area_QFED,lat_grid_size,lon_grid_size)
-
-#year_in = 2021
-#days_in_month = np.array([31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31])
-#days_in_year = 365
-#regrid_QFED_2x25(year_in,days_in_month,days_in_year,lat_2x25,lon_2x25,area_2x25,lat,lon,area_QFED,lat_grid_size,lon_grid_size)
-
-#year_in = 2022
-#days_in_month = np.array([31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31])
-#days_in_year = 365
-#regrid_QFED_2x25(year_in,days_in_month,days_in_year,lat_2x25,lon_2x25,area_2x25,lat,lon,area_QFED,lat_grid_size,lon_grid_size)
-
-year_in = 2023
-days_in_month = np.array([0, 0, 0, 0, 0, 0, 0, 31, 30, 31, 30, 31])
-days_in_year = 365
-regrid_QFED_2x25(year_in,days_in_month,days_in_year,lat_2x25,lon_2x25,area_2x25,lat,lon,area_QFED,lat_grid_size,lon_grid_size)
+    #year_in = 2022
+    #days_in_month = np.array([31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31])
+    #days_in_year = 365
+    #regrid_QFED_2x25(year_in,days_in_month,days_in_year,lat_2x25,lon_2x25,area_2x25,lat,lon,area_QFED,lat_grid_size,lon_grid_size)
+    
+    year_in = 2023
+    days_in_month = np.array([0, 0, 0, 0, 0, 0, 0, 31, 30, 31, 30, 31])
+    days_in_year = 365
+    regrid_QFED_2x25(year_in,days_in_month,days_in_year,lat_2x25,lon_2x25,area_2x25,lat,lon,area_QFED,lat_grid_size,lon_grid_size)

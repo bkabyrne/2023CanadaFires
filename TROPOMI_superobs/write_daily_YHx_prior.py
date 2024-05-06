@@ -19,13 +19,14 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 import matplotlib.patches as mpatches
 
-####################################################
-#
-# This program reads the TROPOMI co-samples and writes them to annual files.
-# The output of this file is intended to be used to generate the Heald uncertainty
-# estimates on the obs.
-#
-####################################################
+'''
+------ write_daily_YHx_prior.py
+
+ This program reads the TROPOMI co-samples and writes them to annual files.
+ The output of this file is intended to be used to generate the Heald uncertainty
+ estimates on the obs.
+
+'''
 
 
 def read_obs(nc_file_TROPOMI,nc_file_GFED,nc_file_GFAS,nc_file_QFED,doy):
@@ -149,29 +150,31 @@ def create_day_and_month_arrays(days_in_month,days_in_year):
     return month_arr, day_arr
 
 
-# data for 02/29/2020 is missing, so we treat Feb as havin 28 days
-days_in_month = np.array([31,28,31,30,31,30,31,31,30,31,30,31])
-days_in_year = 365
-# Create array of month and day-of-month for each day of the year
-month_arr, day_arr = create_day_and_month_arrays(days_in_month,days_in_year)
+if __name__ == "__main__":
 
-doy_to_include = np.arange(273-90 -1 )+90
+    # data for 02/29/2020 is missing, so we treat Feb as havin 28 days
+    days_in_month = np.array([31,28,31,30,31,30,31,31,30,31,30,31])
+    days_in_year = 365
+    # Create array of month and day-of-month for each day of the year
+    month_arr, day_arr = create_day_and_month_arrays(days_in_month,days_in_year)
+    
+    doy_to_include = np.arange(273-90 -1 )+90
 
-for year in range(2019,2024):
-    # Read TROPOMI for each day in range and combine into single vector
-    longitude, latitude, xCO_uncertainty, Y_GFED, Hx_GFED, Hx_GFAS, Hx_QFED, doy_arr = combine_annual_obs(year,month_arr,day_arr,doy_to_include)
-
-    II_finite = np.where(np.isfinite(longitude))
-    longitude_out = longitude[II_finite]
-    latitude_out = latitude[II_finite]
-    xCO_uncertainty_out = xCO_uncertainty[II_finite]
-    Y_GFED_out = Y_GFED[II_finite]
-    Hx_GFED_out = Hx_GFED[II_finite]
-    Hx_GFAS_out = Hx_GFAS[II_finite]
-    Hx_QFED_out = Hx_QFED[II_finite]
-    doy_arr_out = doy_arr[II_finite]
-    print('DOY range:')
-    print(np.nanmin(doy_arr_out))
-    print(np.nanmax(doy_arr_out))
-    # Write the co-samples
-    write_cosamples(year,longitude_out,latitude_out,xCO_uncertainty_out,Y_GFED_out,Hx_GFED_out,Hx_GFAS_out,Hx_QFED_out,doy_arr_out)
+    for year in range(2019,2024):
+        # Read TROPOMI for each day in range and combine into single vector
+        longitude, latitude, xCO_uncertainty, Y_GFED, Hx_GFED, Hx_GFAS, Hx_QFED, doy_arr = combine_annual_obs(year,month_arr,day_arr,doy_to_include)
+        
+        II_finite = np.where(np.isfinite(longitude))
+        longitude_out = longitude[II_finite]
+        latitude_out = latitude[II_finite]
+        xCO_uncertainty_out = xCO_uncertainty[II_finite]
+        Y_GFED_out = Y_GFED[II_finite]
+        Hx_GFED_out = Hx_GFED[II_finite]
+        Hx_GFAS_out = Hx_GFAS[II_finite]
+        Hx_QFED_out = Hx_QFED[II_finite]
+        doy_arr_out = doy_arr[II_finite]
+        print('DOY range:')
+        print(np.nanmin(doy_arr_out))
+        print(np.nanmax(doy_arr_out))
+        # Write the co-samples
+        write_cosamples(year,longitude_out,latitude_out,xCO_uncertainty_out,Y_GFED_out,Hx_GFED_out,Hx_GFAS_out,Hx_QFED_out,doy_arr_out)

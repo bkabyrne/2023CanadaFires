@@ -1,14 +1,22 @@
 import cdsapi
 import numpy as np
 
+'''
+------ download_GFAS.py
+
+Program to download the GFAS fire inventory
+'''
 
 def download_cams_global_biomass_emissions(year,month,day):
 
-    # ######################################################
-    #
-    # Download GFAS fire emissions dataset
-    #
-    # ######################################################
+    '''
+    Download GFAS fire emissions dataset for a given dat
+
+    inputs:
+     - year: year of data file
+     - month: month of data file
+     - day: day of data file
+    '''
 
     date1 = str(year).zfill(4)+'-'+str(month).zfill(2)+'-'+str(day).zfill(2)    
 

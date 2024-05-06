@@ -14,6 +14,12 @@ from math import pi, cos, radians
 import numpy.matlib
 from pylab import *
 
+'''                                                              
+------ write_posterior_fire_COandCO2_7day_MonteCarlo.py          
+                                                                 
+Writes posterior fire emissions for Monte Carlo ensemble (7-day)
+'''
+
 def find_file_with_largest_number(directory):
     #                                                                                         
     # --------------------------                                                              

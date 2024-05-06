@@ -19,26 +19,38 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 import matplotlib.patches as mpatches
 
-# ===========================================
-#
-# This program writes TROPOMI obs with uncertainties that include
-# representativeness errors. The observational error is calculated
-# to be:
-#
-# unc^2 = retrieval_error^2 + Heald_error^2
-#
-# This program depends on the outputs of:
-#   - write_daily_YHx_prior.py
-#   - calculate_representativeness_error_Heald.py
-#
-# ===========================================
+'''
+------- write_TROPOMI_w_representativeness_errors.py
 
-def write_TROPOMI_wRep_error(year,month,day):
-    
-    print('--------------------------------------------')
+ This program writes TROPOMI obs with uncertainties that include
+ representativeness errors. The representativeness errors are obtained
+ from a pre-existing gridded dataset of errors using the Heald et al. method.
+
+
+ This program depends on the outputs of:
+   - write_daily_YHx_prior.py
+   - calculate_representativeness_error_Heald.py
+
+'''
+
+def write_TROPOMI_wRep_error(dir_in,dir_out,year,month,day,lon_grid,lat_grid,unc_Heald):
+
+    '''
+    Creates new TROPOMI L2# file with representativeness errors
+
+    Inputs:
+     - dir_in: directory of TROPOMI L2# data
+     - dir_out: directory to save new TROPOMI L2# data
+     - year: year of observations
+     - month: monh of observations
+     - day: day of observations
+     - lon_grid: lon grid for respresentativeness errors
+     - lat_grid: lat grid for respresentativeness errors
+     - unc_Heald: respresentativeness errors    
+    '''
     
     # Read TROPOMI obs ----
-    nc_file_TROPOMI = '/nobackup/bbyrne1/TROPOMI_XCO_2x25/'+str(year).zfill(4)+'/'+str(int(month)).zfill(2)+'/'+str(int(day)).zfill(2)+'.nc'
+    nc_file_TROPOMI = dir_in+str(year).zfill(4)+'/'+str(int(month)).zfill(2)+'/'+str(int(day)).zfill(2)+'.nc'
     # ---
     if os.path.isfile(nc_file_TROPOMI):
         # ----
@@ -74,7 +86,7 @@ def write_TROPOMI_wRep_error(year,month,day):
 
 
         # Write out TROPOMI obs with total uncertainty
-        nc_file_TROPOMIrep = '/nobackup/bbyrne1/TROPOMIrep_XCO_2x25/'+str(year).zfill(4)+'/'+str(int(month)).zfill(2)+'/'+str(int(day)).zfill(2)+'.nc'
+        nc_file_TROPOMIrep = dir_out+str(year).zfill(4)+'/'+str(int(month)).zfill(2)+'/'+str(int(day)).zfill(2)+'.nc'
         print(nc_file_TROPOMIrep)
         dataset = Dataset(nc_file_TROPOMIrep,'w')
         nSamples = dataset.createDimension('nSamples',np.size(time))
@@ -104,40 +116,44 @@ def write_TROPOMI_wRep_error(year,month,day):
         dataset.close()
 
 
-
-# ---------------------------------
-# Create arrays of day, month for 365 days
-# ignore leap days
-days_in_month = np.array([30,31,30,31,31,30])
-days_in_year = np.sum(days_in_month)
-#
-# ----
-n=0
-month_arr = np.zeros(days_in_year)
-day_arr = np.zeros(days_in_year)
-for i in range(np.size(days_in_month)):
-    for j in range(days_in_month[i]):
-        month_arr[n] = int(i + 4)
-        day_arr[n] = int(j + 1)
-        n=n+1
-# ---------------------------------
-
         
-# ---------------------------------
-# load Heald uncertainties, which have dimension [day of year, lat, lon]
-file_in = 'Daily_unc_Heald.nc'
-print(file_in)
-f = Dataset(file_in,'r')
-lon_grid=f.variables['longitude'][:]
-lat_grid=f.variables['latitude'][:]
-unc_Heald=f.variables['unc_Heald'][:] * 1e-9
-f.close()
-# ---------------------------------
+if __name__ == "__main__":
 
-# Loop over years
-for year in range(2022,2024):
-    # Loop over days of the year
-    for ii in range(days_in_year-1):
-        # Write the TROPOMI data with representativeness errors
-        write_TROPOMI_wRep_error(year,month_arr[ii],day_arr[ii])
+    dir_in = '/nobackup/bbyrne1/TROPOMI_XCO_2x25/'
+    dir_out = '/nobackup/bbyrne1/TROPOMIrep_XCO_2x25/'
     
+    # ---------------------------------
+    # Create arrays of day, month for 365 days
+    # ignore leap days
+    days_in_month = np.array([30,31,30,31,31,30])
+    days_in_year = np.sum(days_in_month)
+    #
+    # ----
+    n=0
+    month_arr = np.zeros(days_in_year)
+    day_arr = np.zeros(days_in_year)
+    for i in range(np.size(days_in_month)):
+        for j in range(days_in_month[i]):
+            month_arr[n] = int(i + 4)
+            day_arr[n] = int(j + 1)
+            n=n+1
+    # ---------------------------------
+        
+    # ---------------------------------
+    # load Heald uncertainties, which have dimension [day of year, lat, lon]
+    file_in = 'Daily_unc_Heald.nc'
+    print(file_in)
+    f = Dataset(file_in,'r')
+    lon_grid=f.variables['longitude'][:]
+    lat_grid=f.variables['latitude'][:]
+    unc_Heald=f.variables['unc_Heald'][:] * 1e-9
+    f.close()
+    # ---------------------------------
+
+    # Loop over years
+    for year in range(2022,2024):
+        # Loop over days of the year
+        for ii in range(days_in_year-1):
+            # Write the TROPOMI data with representativeness errors
+            write_TROPOMI_wRep_error(dir_in,dir_out,year,month_arr[ii],day_arr[ii],lon_grid,lat_grid,unc_Heald)
+            print('--------------------------------------------')

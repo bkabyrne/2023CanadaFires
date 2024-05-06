@@ -1,4 +1,3 @@
-#from mpl_toolkits.basemap import Basemap, cm
 import csv
 import numpy as np
 import matplotlib.pyplot as plt
@@ -14,6 +13,13 @@ from math import pi, cos, radians
 import numpy.matlib
 from pylab import *
 
+'''
+----- write_posterior_otherFlux_COandCO2_3day.py
+
+Writes posterior fluxes for non-fire emissions (Fossil & Biogenic)
+for inversions with 3-Day optimizatin
+
+'''
 
 def calc_fluxes(SF,nc_FF_fire,nc_Biogenic_fire,prior_model):
     #

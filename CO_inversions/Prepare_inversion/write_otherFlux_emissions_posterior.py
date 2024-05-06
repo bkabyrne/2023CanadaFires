@@ -16,13 +16,16 @@ from pylab import *
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 
-# ######################################################
-#
-#  This program writes the prior fluxes used for the 3-day
-#  inversions. The component emissions are combined and the
-#  uncertainties are constructed.
-#
-# ######################################################
+'''
+
+  This program writes the prior fluxes used for the 3-day
+  inversions. The component emissions are combined and the
+  uncertainties are constructed.
+
+  These fluxes are used for forward simulations with the fire
+  emissions released at the injection height
+
+'''
 
 
 def calculate_daily_injh_and_CO_flux(year,month,day,CO_flux_BB_prior,CO_flux_BB_post):

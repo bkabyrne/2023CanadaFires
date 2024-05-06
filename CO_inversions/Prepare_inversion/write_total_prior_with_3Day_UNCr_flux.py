@@ -16,13 +16,13 @@ from pylab import *
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 
-# ######################################################
-#
-#  This program writes the prior fluxes used for the 3-day
-#  inversions. The component emissions are combined and the
-#  uncertainties are constructed.
-#
-# ######################################################
+'''
+
+  This program writes the prior fluxes used for the 3-day
+  inversions. The component emissions are combined and the
+  uncertainties are constructed.
+
+'''
 
 def read_combine_fluxes(inventory,year,month,day):
     #

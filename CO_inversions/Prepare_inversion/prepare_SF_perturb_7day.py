@@ -16,13 +16,11 @@ from pylab import *
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 
-# #########################################################################
-#
-#  This program creates random perturbations to the prior Scale Factor
-#  based on the prior uncertainties. These are used for the Monte Carlo
-# experiments.
-#
-# #########################################################################
+'''
+  This program creates random perturbations to the prior Scale Factor
+  based on the prior uncertainties. These are used for the Monte Carlo
+  experiments. This version is for 7-day optimization
+'''
 
 
 

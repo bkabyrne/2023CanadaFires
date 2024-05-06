@@ -19,17 +19,18 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 import matplotlib.patches as mpatches
 
-######################################################################
-#
-# This files estimates observation error based on the method of
-# Heald et al. (https://doi.org/10.1029/2004JD005185). This is
-# called the  relative residual error (RRE) method and estimates
-# the observational error to be the standard deviation of Y-Hx
-# using prior fluxes.
-#
-# This file uses the prior simulated TROPOMI obs created in write_daily_YHx_prior.py
-#
-######################################################################
+'''
+------ calculate_representativeness_error_Heald.py
+
+ This files estimates observation error based on the method of
+ Heald et al. (https://doi.org/10.1029/2004JD005185). This is
+ called the relative residual error (RRE) method and estimates
+ the observational error to be the standard deviation of Y-Hx
+ using prior fluxes.
+
+ This file uses the prior simulated TROPOMI obs created in write_daily_YHx_prior.py
+
+'''
 
 
 # ---------------------------

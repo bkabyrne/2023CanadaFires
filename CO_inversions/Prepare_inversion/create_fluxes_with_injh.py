@@ -4,11 +4,11 @@ import glob, os
 from math import pi, cos, radians
 from pylab import *
 
-# ===================================================================================
-#
-#  Maps fire emissions to injection height from GFAS IS4fires
-#
-# ===================================================================================
+'''
+
+  Maps fire emissions to injection height from GFAS IS4fires
+
+'''
 
 
 def define_Ap_Bp_for_pressure():

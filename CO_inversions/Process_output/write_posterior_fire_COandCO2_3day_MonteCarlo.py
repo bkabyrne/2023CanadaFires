@@ -1,4 +1,3 @@
-#from mpl_toolkits.basemap import Basemap, cm
 import csv
 import numpy as np
 import matplotlib.pyplot as plt
@@ -14,6 +13,11 @@ from math import pi, cos, radians
 import numpy.matlib
 from pylab import *
 
+'''
+------ write_posterior_fire_COandCO2_3day_MonteCarlo.py
+
+Writes posterior fire emissions for Monte Carlo ensemble (3-day)
+'''
 
 def calc_fluxes(SF,nc_CO_fire,nc_CO2_fire,prior_model):
     #
