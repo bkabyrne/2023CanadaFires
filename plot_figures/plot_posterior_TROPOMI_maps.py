@@ -300,9 +300,11 @@ if __name__ == '__main__':
     f.close()
     # =========
 
+    # either '_OH' or ''
+    OH_choice = '_OH'
 
     # ============================================================================
-    nc_file = './data_for_figures/TROPOMI_CanadaFire_prior_YHx.nc'
+    nc_file = './data_for_figures/TROPOMI'+OH_choice+'_CanadaFire_prior_YHx.nc'
     f=Dataset(nc_file,mode='r')
     lon=f.variables['longitude'][:]
     lat=f.variables['latitude'][:]
@@ -313,43 +315,43 @@ if __name__ == '__main__':
     doy = f.variables['doy_arr'][:]
     f.close()
     # -------------------------------------------------------------------------
-    nc_file = './data_for_figures/TROPOMI_CanadaFire_posterior_YHx_3day.nc'
+    nc_file = './data_for_figures/TROPOMI'+OH_choice+'_CanadaFire_posterior_YHx_3day.nc'
     f=Dataset(nc_file,mode='r')
     Hx_GFAS_post_3day=f.variables['Hx_GFAS'][:]
     Hx_GFED_post_3day=f.variables['Hx_GFED'][:]
     Hx_QFED_post_3day=f.variables['Hx_QFED'][:]
     f.close()
-    nc_file = './data_for_figures/TROPOMI_CanadaFire_posterior_YHx_3day_rep.nc'
+    nc_file = './data_for_figures/TROPOMI'+OH_choice+'_CanadaFire_posterior_YHx_3day_rep.nc'
     f=Dataset(nc_file,mode='r')
     Hx_GFAS_post_3day_rep=f.variables['Hx_GFAS'][:]
     Hx_GFED_post_3day_rep=f.variables['Hx_GFED'][:]
     Hx_QFED_post_3day_rep=f.variables['Hx_QFED'][:]
     f.close()
-    nc_file = './data_for_figures/TROPOMI_CanadaFire_posterior_YHx_7day.nc'
+    nc_file = './data_for_figures/TROPOMI'+OH_choice+'_CanadaFire_posterior_YHx_7day.nc'
     f=Dataset(nc_file,mode='r')
     Hx_GFAS_post_7day=f.variables['Hx_GFAS'][:]
     Hx_GFED_post_7day=f.variables['Hx_GFED'][:]
     Hx_QFED_post_7day=f.variables['Hx_QFED'][:]
     f.close()
-    nc_file = './data_for_figures/TROPOMI_CanadaFire_posterior_YHx_7day_rep.nc'
+    nc_file = './data_for_figures/TROPOMI'+OH_choice+'_CanadaFire_posterior_YHx_7day_rep.nc'
     f=Dataset(nc_file,mode='r')
     Hx_GFAS_post_7day_rep=f.variables['Hx_GFAS'][:]
     Hx_GFED_post_7day_rep=f.variables['Hx_GFED'][:]
     Hx_QFED_post_7day_rep=f.variables['Hx_QFED'][:]
     f.close()
     # -------------------------------------------------------------------------
-    plot_histogram(lon,lat,Y,Hx_GFAS_prior,Hx_GFED_prior,Hx_QFED_prior,Hx_GFAS_post_3day_rep,Hx_GFED_post_3day_rep,Hx_QFED_post_3day_rep,doy,'TROPOMI_histogram_4case_3day_rep.png')
-    plot_histogram(lon,lat,Y,Hx_GFAS_prior,Hx_GFED_prior,Hx_QFED_prior,Hx_GFAS_post_3day,Hx_GFED_post_3day,Hx_QFED_post_3day,doy,'TROPOMI_histogram_4case_3day.png')
-    plot_histogram(lon,lat,Y,Hx_GFAS_prior,Hx_GFED_prior,Hx_QFED_prior,Hx_GFAS_post_7day_rep,Hx_GFED_post_7day_rep,Hx_QFED_post_7day_rep,doy,'TROPOMI_histogram_4case_7day_rep.png')
-    plot_histogram(lon,lat,Y,Hx_GFAS_prior,Hx_GFED_prior,Hx_QFED_prior,Hx_GFAS_post_7day,Hx_GFED_post_7day,Hx_QFED_post_7day,doy,'TROPOMI_histogram_4case_7day.png')
+    plot_histogram(lon,lat,Y,Hx_GFAS_prior,Hx_GFED_prior,Hx_QFED_prior,Hx_GFAS_post_3day_rep,Hx_GFED_post_3day_rep,Hx_QFED_post_3day_rep,doy,'TROPOMI'+OH_choice+'_histogram_4case_3day_rep.png')
+    plot_histogram(lon,lat,Y,Hx_GFAS_prior,Hx_GFED_prior,Hx_QFED_prior,Hx_GFAS_post_3day,Hx_GFED_post_3day,Hx_QFED_post_3day,doy,'TROPOMI'+OH_choice+'_histogram_4case_3day.png')
+    plot_histogram(lon,lat,Y,Hx_GFAS_prior,Hx_GFED_prior,Hx_QFED_prior,Hx_GFAS_post_7day_rep,Hx_GFED_post_7day_rep,Hx_QFED_post_7day_rep,doy,'TROPOMI'+OH_choice+'_histogram_4case_7day_rep.png')
+    plot_histogram(lon,lat,Y,Hx_GFAS_prior,Hx_GFED_prior,Hx_QFED_prior,Hx_GFAS_post_7day,Hx_GFED_post_7day,Hx_QFED_post_7day,doy,'TROPOMI'+OH_choice+'_histogram_4case_7day.png')
     # ---
     Hx_GFAS_post = (Hx_GFAS_post_3day+Hx_GFAS_post_3day_rep+Hx_GFAS_post_7day+Hx_GFAS_post_7day_rep)/4.
     Hx_GFED_post = (Hx_GFED_post_3day+Hx_GFED_post_3day_rep+Hx_GFED_post_7day+Hx_GFED_post_7day_rep)/4.
     Hx_QFED_post = (Hx_QFED_post_3day+Hx_QFED_post_3day_rep+Hx_QFED_post_7day+Hx_QFED_post_7day_rep)/4.
     # ---
-    plot_timeseries(lon,lat,Y,Hx_GFAS_prior,Hx_GFED_prior,Hx_QFED_prior,Hx_GFAS_post,Hx_GFED_post,Hx_QFED_post,doy,'timeseries_XCO_4case.png')
-    plot_histogram(lon,lat,Y,Hx_GFAS_prior,Hx_GFED_prior,Hx_QFED_prior,Hx_GFAS_post,Hx_GFED_post,Hx_QFED_post,doy,'TROPOMI_histogram_4case.png')
-    plot_maps(lon,lat,Y,Hx_GFAS_prior,Hx_GFED_prior,Hx_QFED_prior,Hx_GFAS_post,Hx_GFED_post,Hx_QFED_post,doy,'TROPOMI_maps_fit_4case.png')
+    plot_timeseries(lon,lat,Y,Hx_GFAS_prior,Hx_GFED_prior,Hx_QFED_prior,Hx_GFAS_post,Hx_GFED_post,Hx_QFED_post,doy,'timeseries'+OH_choice+'_XCO_4case.png')
+    plot_histogram(lon,lat,Y,Hx_GFAS_prior,Hx_GFED_prior,Hx_QFED_prior,Hx_GFAS_post,Hx_GFED_post,Hx_QFED_post,doy,'TROPOMI'+OH_choice+'_histogram_4case.png')
+    plot_maps(lon,lat,Y,Hx_GFAS_prior,Hx_GFED_prior,Hx_QFED_prior,Hx_GFAS_post,Hx_GFED_post,Hx_QFED_post,doy,'TROPOMI'+OH_choice+'_maps_fit_4case.png')
     # ============================================================================
     
     

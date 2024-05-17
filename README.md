@@ -16,7 +16,7 @@ This repository contains python programs used to 1. Process TROPOMI CO retrieval
 
 Contents of ./CO_inversions/Prepare_inversion
 - **download_GFAS.py:** Download GFAS fire inventory
-- **download_QFED.sh:** Dowload QFED fire inventory
+- **download_QFED.sh:** Download QFED fire inventory
 - **regrid_QFED_to_2x25.py:** Regrid QFED to 2 x 2.5
 - **regrid_GFAS_to_2x25.py:** Regrid GFAS to 2 x 2.5
 - **write_total_prior_with_3Day_UNCr_flux.py:** Combines prior fire, fossil and biomass fluxes for inversion (3-day optimization)

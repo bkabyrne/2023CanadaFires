@@ -136,34 +136,44 @@ if __name__ == "__main__":
             n=n+1
     # =======================================
 
+    # either '_OH' or ''
+    OH_choice = '_OH'
+    
     base_dir = '/u/bbyrne1/python_codes/Canada_Fires_2023/Byrne_etal_codes/plot_figures/data_for_figures/'
     # =======================================
-    run_dirs_in = ['/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Run_COinv_QFED_2023',
-                   '/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Run_COinv_GFED_2023',
-                   '/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Run_COinv_GFAS_2023']
+    run_dirs_in = ['/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Run'+OH_choice+'_COinv_QFED_2023',
+                   '/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Run'+OH_choice+'_COinv_GFED_2023',
+                   '/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Run'+OH_choice+'_COinv_GFAS_2023']
     XCO2_data_dir = 'TROPOMI_XCO_2x25'
-    file_out = base_dir+'TROPOMI_CanadaFire_posterior_YHx_3day.nc'
+    file_out = base_dir+'TROPOMI'+OH_choice+'_CanadaFire_posterior_YHx_3day.nc'
     create_timeseries_and_write(run_dirs_in,XCO2_data_dir,file_out,month_arr,day_arr)
     # ---------------------------------------
-    run_dirs_in = ['/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Run_COinv_rep_QFED_2023',
-                   '/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Run_COinv_rep_GFED_2023',
-                   '/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Run_COinv_rep_GFAS_2023']
+    run_dirs_in = ['/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Run'+OH_choice+'_COinv_rep_QFED_2023',
+                   '/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Run'+OH_choice+'_COinv_rep_GFED_2023',
+                   '/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Run'+OH_choice+'_COinv_rep_GFAS_2023']
     XCO2_data_dir = 'TROPOMIrep_XCO_2x25'
-    file_out = base_dir+'TROPOMI_CanadaFire_posterior_YHx_3day_rep.nc'
+    file_out = base_dir+'TROPOMI'+OH_choice+'_CanadaFire_posterior_YHx_3day_rep.nc'
     create_timeseries_and_write(run_dirs_in,XCO2_data_dir,file_out,month_arr,day_arr)
     # ---------------------------------------
-    run_dirs_in = ['/nobackup/bbyrne1/GHGF-CMS-7day-COinv-2023/Run_COinv_QFED_2023',
-                   '/nobackup/bbyrne1/GHGF-CMS-7day-COinv-2023/Run_COinv_GFED_2023',
-                   '/nobackup/bbyrne1/GHGF-CMS-7day-COinv-2023/Run_COinv_GFAS_2023']
+    run_dirs_in = ['/nobackup/bbyrne1/GHGF-CMS-7day-COinv-2023/Run'+OH_choice+'_COinv_QFED_2023',
+                   '/nobackup/bbyrne1/GHGF-CMS-7day-COinv-2023/Run'+OH_choice+'_COinv_GFED_2023',
+                   '/nobackup/bbyrne1/GHGF-CMS-7day-COinv-2023/Run'+OH_choice+'_COinv_GFAS_2023']
     XCO2_data_dir = 'TROPOMI_XCO_2x25'
-    file_out = base_dir+'TROPOMI_CanadaFire_posterior_YHx_7day.nc'
+    file_out = base_dir+'TROPOMI'+OH_choice+'_CanadaFire_posterior_YHx_7day.nc'
     create_timeseries_and_write(run_dirs_in,XCO2_data_dir,file_out,month_arr,day_arr)
     # ---------------------------------------
-    run_dirs_in = ['/nobackup/bbyrne1/GHGF-CMS-7day-COinv-2023/Run_COinv_rep_QFED_2023',
-                   '/nobackup/bbyrne1/GHGF-CMS-7day-COinv-2023/Run_COinv_rep_GFED_2023',
-                   '/nobackup/bbyrne1/GHGF-CMS-7day-COinv-2023/Run_COinv_rep_GFAS_2023']
+    run_dirs_in = ['/nobackup/bbyrne1/GHGF-CMS-7day-COinv-2023/Run'+OH_choice+'_COinv_rep_QFED_2023',
+                   '/nobackup/bbyrne1/GHGF-CMS-7day-COinv-2023/Run'+OH_choice+'_COinv_rep_GFED_2023',
+                   '/nobackup/bbyrne1/GHGF-CMS-7day-COinv-2023/Run'+OH_choice+'_COinv_rep_GFAS_2023']
     XCO2_data_dir = 'TROPOMIrep_XCO_2x25'
-    file_out = base_dir+'TROPOMI_CanadaFire_posterior_YHx_7day_rep.nc'
+    file_out = base_dir+'TROPOMI'+OH_choice+'_CanadaFire_posterior_YHx_7day_rep.nc'
+    create_timeseries_and_write(run_dirs_in,XCO2_data_dir,file_out,month_arr,day_arr)
+    # ---------------------------------------
+    run_dirs_in = ['/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Prior_OH_COinv_QFED_2023',
+                   '/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Prior_OH_COinv_GFED_2023',
+                   '/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Prior_OH_COinv_GFAS_2023']
+    XCO2_data_dir = 'TROPOMI_XCO_2x25'
+    file_out = base_dir+'TROPOMI_OH_CanadaFire_prior_YHx.nc'
     create_timeseries_and_write(run_dirs_in,XCO2_data_dir,file_out,month_arr,day_arr)
     # =======================================
     

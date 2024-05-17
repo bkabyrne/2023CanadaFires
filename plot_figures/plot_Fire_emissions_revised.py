@@ -221,19 +221,19 @@ if __name__ == '__main__':
         yyyy = ii + 2010
         nc_out = './data_for_figures/MOPITT_COinv_2x25_'+str(yyyy).zfill(4)+'_COandCO2.nc'
         post_MaySep_MOPITT_vec[ii] = MaySep_forest_fluxes(yyyy,nc_out,Forest_mask_2x25)
-    # Calculate GFED posterior May-Sep Fire emissions for each year for the TROPOMI inversions
-    post_MaySep_TROPOMI_vec = np.zeros(5)
-    for ii in range(5):
-        yyyy = ii + 2019
-        nc_out = './data_for_figures/TROPOMI_COinv_2x25_'+str(yyyy).zfill(4)+'_COandCO2.nc'
-        post_MaySep_TROPOMI_vec[ii] = MaySep_forest_fluxes(yyyy,nc_out,Forest_mask_2x25)
-    # Calculate QFED posterior May-Sep Fire emissions for each year for the TROPOMI inversions
-    nc_out = './data_for_figures/TROPOMI_QFED_COinv_2x25_2023_COandCO2.nc'
-    post_MaySep_TROPOMI_QFED_vec = MaySep_forest_fluxes(2023,nc_out,Forest_mask_2x25)
-    # Calculate GFAS posterior May-Sep Fire emissions for each year for the TROPOMI inversions
-    nc_out = './data_for_figures/TROPOMI_GFAS_COinv_2x25_2023_COandCO2.nc'
-    post_MaySep_TROPOMI_GFAS_vec = MaySep_forest_fluxes(2023,nc_out,Forest_mask_2x25)
-    #
+    ## Calculate GFED posterior May-Sep Fire emissions for each year for the TROPOMI inversions
+    #post_MaySep_TROPOMI_vec = np.zeros(5)
+    ##for ii in range(5):
+    #    yyyy = ii + 2019
+    #    nc_out = './data_for_figures/TROPOMI_COinv_2x25_'+str(yyyy).zfill(4)+'_COandCO2.nc'
+    #    post_MaySep_TROPOMI_vec[ii] = MaySep_forest_fluxes(yyyy,nc_out,Forest_mask_2x25)
+    ## Calculate QFED posterior May-Sep Fire emissions for each year for the TROPOMI inversions
+    #nc_out = './data_for_figures/TROPOMI_QFED_COinv_2x25_2023_COandCO2.nc'
+    #post_MaySep_TROPOMI_QFED_vec = MaySep_forest_fluxes(2023,nc_out,Forest_mask_2x25)
+    ## Calculate GFAS posterior May-Sep Fire emissions for each year for the TROPOMI inversions
+    #nc_out = './data_for_figures/TROPOMI_GFAS_COinv_2x25_2023_COandCO2.nc'
+    #post_MaySep_TROPOMI_GFAS_vec = MaySep_forest_fluxes(2023,nc_out,Forest_mask_2x25)
+    ##
     # ---------------------------------------------
     post_MaySep_TROPOMI_GFED_3day_vec = np.zeros(5)
     for i in range(5):
@@ -286,6 +286,20 @@ if __name__ == '__main__':
     for i in range(5):
         nc_file = './data_for_figures/TROPOMI_rep_GFAS_COinv_2x25_'+str(i+2019)+'_fire_7day.nc'
         post_MaySep_TROPOMI_rep_GFAS_7day_vec[i] = MaySep_forest_fluxes(i+2019,nc_file,Forest_mask_2x25)
+
+        post_MaySep_TROPOMI_vec = (post_MaySep_TROPOMI_GFED_3day_vec +
+                                   post_MaySep_TROPOMI_QFED_3day_vec +
+                                   post_MaySep_TROPOMI_GFAS_3day_vec +
+                                   post_MaySep_TROPOMI_rep_GFED_3day_vec +
+                                   post_MaySep_TROPOMI_rep_QFED_3day_vec +
+                                   post_MaySep_TROPOMI_rep_GFAS_3day_vec +
+                                   post_MaySep_TROPOMI_GFED_7day_vec +
+                                   post_MaySep_TROPOMI_QFED_7day_vec +
+                                   post_MaySep_TROPOMI_GFAS_7day_vec +
+                                   post_MaySep_TROPOMI_rep_GFED_7day_vec +
+                                   post_MaySep_TROPOMI_rep_QFED_7day_vec +
+                                   post_MaySep_TROPOMI_rep_GFAS_7day_vec ) / 12.
+
     # ----------- Monte Carlo estimates
     nc_file = './data_for_figures/TROPOMI_GFED_COinv_2x25_2023_fire_7day_MonteCarlo.nc'
     post_MaySep_TROPOMI_rep_GFED_7day_MonteCarlo = MaySep_forest_fluxes_MonteCarlo(2023,nc_file,Forest_mask_2x25)

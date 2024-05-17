@@ -150,9 +150,11 @@ def write_dataset(nc_out, CO_Flux_prior, CO_Flux_post, CO2_Flux_prior, CO2_Flux_
 if __name__ == "__main__":
     
     # -- Parameters --
-    iteration = '21'
+    iteration = '11'
     # ----------------
 
+    # either '_OH' or ''
+    OH_choice = '_OH'
 
     for rep in [0,1]:
         for year in range(2023,2024):
@@ -161,9 +163,9 @@ if __name__ == "__main__":
                 
                 # Read in the scale factors
                 if rep==1:
-                    ncfile_SF = '/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Run_COinv_rep_'+prior_model+'_'+str(year).zfill(4)+'/GDT-EMS/EMS-sf-'+iteration+'.nc'
+                    ncfile_SF = '/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Run'+OH_choice+'_COinv_rep_'+prior_model+'_'+str(year).zfill(4)+'/GDT-EMS/EMS-sf-'+iteration+'.nc'
                 else:
-                    ncfile_SF = '/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Run_COinv_'+prior_model+'_'+str(year).zfill(4)+'/GDT-EMS/EMS-sf-'+iteration+'.nc'
+                    ncfile_SF = '/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Run'+OH_choice+'_COinv_'+prior_model+'_'+str(year).zfill(4)+'/GDT-EMS/EMS-sf-'+iteration+'.nc'
                 print(ncfile_SF)
                 f=Dataset(ncfile_SF,mode='r')
                 lon=f.variables['lon'][:]
@@ -185,8 +187,8 @@ if __name__ == "__main__":
                 # Write out data
                 dir_out = '/u/bbyrne1/python_codes/Canada_Fires_2023/Byrne_etal_codes/plot_figures/data_for_figures/'
                 if rep==1:
-                    ncfile_out = dir_out+'TROPOMI_rep_'+prior_model+'_COinv_2x25_'+str(year).zfill(4)+'_fire_3day.nc'
+                    ncfile_out = dir_out+'TROPOMI'+OH_choice+'_rep_'+prior_model+'_COinv_2x25_'+str(year).zfill(4)+'_fire_3day.nc'
                 else:
-                    ncfile_out = dir_out+'TROPOMI_'+prior_model+'_COinv_2x25_'+str(year).zfill(4)+'_fire_3day.nc'
+                    ncfile_out = dir_out+'TROPOMI'+OH_choice+'_'+prior_model+'_COinv_2x25_'+str(year).zfill(4)+'_fire_3day.nc'
                 
                 write_dataset(ncfile_out, CO_Flux_prior, CO_Flux_post, CO2_Flux_prior, CO2_Flux_post)
