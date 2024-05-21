@@ -319,9 +319,6 @@ cbar.ax.set_yticklabels(['$10^0$', '$10^1$', '$10^2$', '$10^3$', '$10^4$'])
 #                                                                                
 plt.savefig('Figures/Byrne_etal_FigS4.png', dpi=300)
 
-
-
-
 fig = plt.figure(928, figsize=(8*0.7,10*0.7), dpi=300)
 #                                                                               
 m = Basemap(width=5040000,height=3600000,resolution='l',projection='laea',lat_ts=58,lat_0=58.,lon_0=(-150-40)/2.)

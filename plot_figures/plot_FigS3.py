@@ -17,7 +17,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 
 '''
--------- plot_FigS3.py
+-------- plot_FigS4.py
                                                          
 This code processes data and plots Figure S3
                                                          
