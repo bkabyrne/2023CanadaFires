@@ -15,44 +15,75 @@ This repository contains python programs used to 1. Process TROPOMI CO retrieval
 # Contents:
 
 Contents of ./CO_inversions/Prepare_inversion
-- **download_GFAS.py:** Download GFAS fire inventory
-- **download_QFED.sh:** Download QFED fire inventory
-- **regrid_QFED_to_2x25.py:** Regrid QFED to 2 x 2.5
-- **regrid_GFAS_to_2x25.py:** Regrid GFAS to 2 x 2.5
-- **write_total_prior_with_3Day_UNCr_flux.py:** Combines prior fire, fossil and biomass fluxes for inversion (3-day optimization)
-- **create_fluxes_with_injh.py:** Maps fire emissions to injection height from GFAS IS4fires
-- **write_fire_emissions_at_injection_height.py:** Adds injection height to emission data (for sensitivity tests)
-- **write_otherFlux_emissions_posterior.py** Writes fire and biomass emissions (used for tests with fire emitted at injection height)
-- **prepare_SF_perturb.py:** writes perturbed fluxes for Monte Carlo experiments (3-day optimization)
-- **prepare_SF_perturb_7day.py:** writes perturbed fluxes for Monte Carlo experiments (7-day optimization)
+- **download_GFAS.py:**
+> Download GFAS fire inventory
+- **download_QFED.sh:**
+> Download QFED fire inventory
+- **regrid_QFED_to_2x25.py:**
+> Regrid QFED to 2 x 2.5
+- **regrid_GFAS_to_2x25.py:**
+> Regrid GFAS to 2 x 2.5
+- **write_total_prior_with_3Day_UNCr_flux.py:**
+> Combines prior fire, fossil and biomass fluxes for inversion (3-day optimization)
+- **create_fluxes_with_injh.py:**
+> Maps fire emissions to injection height from GFAS IS4fires
+- **write_fire_emissions_at_injection_height.py:**
+> Adds injection height to emission data (for sensitivity tests)
+- **write_otherFlux_emissions_posterior.py**
+> Writes fire and biomass emissions (used for tests with fire emitted at injection height)
+- **prepare_SF_perturb.py:**
+> Writes perturbed fluxes for Monte Carlo experiments (3-day optimization)
+- **prepare_SF_perturb_7day.py:**
+> Writes perturbed fluxes for Monte Carlo experiments (7-day optimization)
 
 Contents of ./CO_inversions/Process_output
-- **write_posterior_fire_COandCO2_3day_MonteCarlo.py:** Writes posterior fire for Monte Carlo ensemble (3-day)
-- **write_posterior_fire_COandCO2_7day_MonteCarlo.py:** Writes posterior fire for Monte Carlo ensemble (7-day)
-- **write_posterior_fire_COandCO2_3day.py:** Writes posterior fire emissions (3-day opt)
-- **write_posterior_fire_COandCO2_7day.py:** Writes posterior fire emissions (7-day opt)
-- **write_posterior_otherFlux_COandCO2_7day.py:** Writes posterior non-fire emissions (7-Day opt)
-- **write_posterior_otherFlux_COandCO2_3day.py:** Writes posterior non-fire emissions (3-Day opt)
+- **write_posterior_fire_COandCO2_3day_MonteCarlo.py:**
+> Writes posterior fire for Monte Carlo ensemble (3-day)
+- **write_posterior_fire_COandCO2_7day_MonteCarlo.py:**
+> Writes posterior fire for Monte Carlo ensemble (7-day)
+- **write_posterior_fire_COandCO2_3day.py:**
+> Writes posterior fire emissions (3-day opt)
+- **write_posterior_fire_COandCO2_7day.py:**
+> Writes posterior fire emissions (7-day opt)
+- **write_posterior_otherFlux_COandCO2_7day.py:**
+> Writes posterior non-fire emissions (7-Day opt)
+- **write_posterior_otherFlux_COandCO2_3day.py:**
+> Writes posterior non-fire emissions (3-Day opt)
 
 Contents of ./TROPOMI_superobs
-- **calc_TROPOMI_mole_fractions_2x25.py:** Maps TROPOMI obs to GEOS-Chem grid and calculates super-obs
+- **calc_TROPOMI_mole_fractions_2x25.py:**
+> Maps TROPOMI obs to GEOS-Chem grid and calculates super-obs
 - **Scripts for generating representativeness errors:**
-  1. **write_daily_YHx_prior.py:** Save simulated CO data
-  2. **calculate_representativeness_error_Heald.py:** Calculates representativeness errors from simulated CO data
-  3. **write_TROPOMI_w_representativeness_errors.py:** Re-writes TROPOMI super-obs with representativeness errors 
-- **make_TROPOMI_MonteCarlo.py:** Calculates TROPOMI data with perturbations for Monte Carlo tests
+  1. **write_daily_YHx_prior.py:**
+  > Save simulated CO data
+  2. **calculate_representativeness_error_Heald.py:**
+  > Calculates representativeness errors from simulated CO data
+  3. **write_TROPOMI_w_representativeness_errors.py:**
+  > Re-writes TROPOMI super-obs with representativeness errors 
+- **make_TROPOMI_MonteCarlo.py:**
+> Calculates TROPOMI data with perturbations for Monte Carlo tests
 
 Contents of ./plot_figures
-- **plot_Fire_emissions_revised.py:** Creates figures 1, S1 and S2
-- **plot_climate_anomalies.py:** Creates figures 2, S4 and S5
-- **plot_Fire_and_climate.py:** Creates figures 3 and S6
-- **plot_inventory.py:** Creates figure 4
-- **plot_FigS3.py** Creates figure S3
-- **plot_posterior_TROPOMI_maps.py** Creates figures S7-S8
-- **plot_TCCON_cosamples.py** Creates figures S9-S10
-- **plt_CMPI5_data.py:** Creates figure S11
-- **plot_FireMaps_FigSY.py** Creates figure S13
-- **plot_Canada_Managed_land.py:** Regrids managed land mask and makes some plots (which are combined to make Fig. S12)
+- **plot_Fire_emissions_revised.py:**
+> Creates figures 1, S1 and S2
+- **plot_climate_anomalies.py:**
+> Creates figures 2, S4 and S5
+- **plot_Fire_and_climate.py:**
+> Creates figures 3 and S6
+- **plot_inventory.py:**
+> Creates figure 4
+- **plot_FigS3.py**
+> Creates figure S3
+- **plot_posterior_TROPOMI_maps.py**
+> Creates figures S7-S8
+- **plot_TCCON_cosamples.py**
+> Creates figures S9-S10
+- **plt_CMPI5_data.py:**
+> Creates figure S11
+- **plot_FireMaps_FigSY.py**
+> Creates figure S13
+- **plot_Canada_Managed_land.py:**
+> Regrids managed land mask and makes some plots (which are combined to make Fig. S12)
 
 
 ## Required content:
