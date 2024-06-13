@@ -72,13 +72,19 @@ def read_obs(nc_file_TROPOMI,nc_file_GFED,nc_file_GFAS,nc_file_QFED,doy):
     return np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan
 
 
-def combine_annual_obs(year,month_arr,day_arr,doy_to_include):
+def combine_annual_obs(year,month_arr,day_arr,doy_to_include,OH_fields):
     #
     for ii in doy_to_include:
         doy = ii
-        nc_file_GFED = '/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/FWD_CO_GFED_'+str(year).zfill(4)+'/OBSF/TROPOMI_XCO_2x25/'+str(year).zfill(4)+'/'+str(int(month_arr[ii])).zfill(2)+'/'+str(int(day_arr[ii])).zfill(2)+'.nc'
-        nc_file_GFAS = '/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/FWD_CO_GFAS_'+str(year).zfill(4)+'/OBSF/TROPOMI_XCO_2x25/'+str(year).zfill(4)+'/'+str(int(month_arr[ii])).zfill(2)+'/'+str(int(day_arr[ii])).zfill(2)+'.nc'
-        nc_file_QFED = '/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/FWD_CO_QFED_'+str(year).zfill(4)+'/OBSF/TROPOMI_XCO_2x25/'+str(year).zfill(4)+'/'+str(int(month_arr[ii])).zfill(2)+'/'+str(int(day_arr[ii])).zfill(2)+'.nc'
+        if OH_fields == 'GC':
+            nc_file_GFED = '/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Prior_OH_COinv_GFED_'+str(year).zfill(4)+'/OBSF/TROPOMI_XCO_2x25/'+str(year).zfill(4)+'/'+str(int(month_arr[ii])).zfill(2)+'/'+str(int(day_arr[ii])).zfill(2)+'.nc'
+            nc_file_GFAS = '/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Prior_OH_COinv_GFAS_'+str(year).zfill(4)+'/OBSF/TROPOMI_XCO_2x25/'+str(year).zfill(4)+'/'+str(int(month_arr[ii])).zfill(2)+'/'+str(int(day_arr[ii])).zfill(2)+'.nc'
+            nc_file_QFED = '/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Prior_OH_COinv_QFED_'+str(year).zfill(4)+'/OBSF/TROPOMI_XCO_2x25/'+str(year).zfill(4)+'/'+str(int(month_arr[ii])).zfill(2)+'/'+str(int(day_arr[ii])).zfill(2)+'.nc'
+            
+        elif OH_fields == 'Kazu':
+            nc_file_GFED = '/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/FWD_CO_GFED_'+str(year).zfill(4)+'/OBSF/TROPOMI_XCO_2x25/'+str(year).zfill(4)+'/'+str(int(month_arr[ii])).zfill(2)+'/'+str(int(day_arr[ii])).zfill(2)+'.nc'
+            nc_file_GFAS = '/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/FWD_CO_GFAS_'+str(year).zfill(4)+'/OBSF/TROPOMI_XCO_2x25/'+str(year).zfill(4)+'/'+str(int(month_arr[ii])).zfill(2)+'/'+str(int(day_arr[ii])).zfill(2)+'.nc'
+            nc_file_QFED = '/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/FWD_CO_QFED_'+str(year).zfill(4)+'/OBSF/TROPOMI_XCO_2x25/'+str(year).zfill(4)+'/'+str(int(month_arr[ii])).zfill(2)+'/'+str(int(day_arr[ii])).zfill(2)+'.nc'
         #
         nc_file_TROPOMI = '/nobackup/bbyrne1/TROPOMI_XCO_2x25/'+str(year).zfill(4)+'/'+str(int(month_arr[ii])).zfill(2)+'/'+str(int(day_arr[ii])).zfill(2)+'.nc'
         #
@@ -110,8 +116,11 @@ def combine_annual_obs(year,month_arr,day_arr,doy_to_include):
 
 
 
-def write_cosamples(year,longitude,latitude,xCO_uncertainty,Y_GFED,Hx_GFED,Hx_GFAS,Hx_QFED,doy_arr):
-    file_out = 'TROPOMI_prior_YHx_'+str(year).zfill(4)+'.nc'
+def write_cosamples(year,longitude,latitude,xCO_uncertainty,Y_GFED,Hx_GFED,Hx_GFAS,Hx_QFED,doy_arr,OH_fields):
+    if OH_fields == 'GC':
+            file_out = 'TROPOMI_OH_prior_YHx_'+str(year).zfill(4)+'.nc'
+    elif OH_fields == 'Kazu':
+        file_out = 'TROPOMI_prior_YHx_'+str(year).zfill(4)+'.nc'
     print(file_out)
     dataset = Dataset(file_out,'w')
     nSamples = dataset.createDimension('nSamples',np.size(longitude))
@@ -160,9 +169,9 @@ if __name__ == "__main__":
     
     doy_to_include = np.arange(273-90 -1 )+90
 
-    for year in range(2019,2024):
+    for year in range(2023,2024):
         # Read TROPOMI for each day in range and combine into single vector
-        longitude, latitude, xCO_uncertainty, Y_GFED, Hx_GFED, Hx_GFAS, Hx_QFED, doy_arr = combine_annual_obs(year,month_arr,day_arr,doy_to_include)
+        longitude, latitude, xCO_uncertainty, Y_GFED, Hx_GFED, Hx_GFAS, Hx_QFED, doy_arr = combine_annual_obs(year,month_arr,day_arr,doy_to_include,'GC')
         
         II_finite = np.where(np.isfinite(longitude))
         longitude_out = longitude[II_finite]
@@ -177,4 +186,4 @@ if __name__ == "__main__":
         print(np.nanmin(doy_arr_out))
         print(np.nanmax(doy_arr_out))
         # Write the co-samples
-        write_cosamples(year,longitude_out,latitude_out,xCO_uncertainty_out,Y_GFED_out,Hx_GFED_out,Hx_GFAS_out,Hx_QFED_out,doy_arr_out)
+        write_cosamples(year,longitude_out,latitude_out,xCO_uncertainty_out,Y_GFED_out,Hx_GFED_out,Hx_GFAS_out,Hx_QFED_out,doy_arr_out,'GC')

@@ -53,20 +53,21 @@ def calculate_posterior_managed_forest_emissions():
         './data_for_figures/TROPOMI_QFED_COinv_2x25_2023_fire_7day.nc',
         './data_for_figures/TROPOMI_rep_GFED_COinv_2x25_2023_fire_7day.nc',
         './data_for_figures/TROPOMI_rep_GFAS_COinv_2x25_2023_fire_7day.nc',
-        './data_for_figures/TROPOMI_rep_QFED_COinv_2x25_2023_fire_7day.nc',
-        './data_for_figures/TROPOMI_OH_GFED_COinv_2x25_2023_fire_3day.nc',
-        './data_for_figures/TROPOMI_OH_GFAS_COinv_2x25_2023_fire_3day.nc',
-        './data_for_figures/TROPOMI_OH_QFED_COinv_2x25_2023_fire_3day.nc',
-        './data_for_figures/TROPOMI_OH_rep_GFED_COinv_2x25_2023_fire_3day.nc',
-        './data_for_figures/TROPOMI_OH_rep_GFAS_COinv_2x25_2023_fire_3day.nc',
-        './data_for_figures/TROPOMI_OH_rep_QFED_COinv_2x25_2023_fire_3day.nc',
-        './data_for_figures/TROPOMI_OH_GFED_COinv_2x25_2023_fire_7day.nc',
-        './data_for_figures/TROPOMI_OH_GFAS_COinv_2x25_2023_fire_7day.nc',
-        './data_for_figures/TROPOMI_OH_QFED_COinv_2x25_2023_fire_7day.nc',
-        './data_for_figures/TROPOMI_OH_rep_GFED_COinv_2x25_2023_fire_7day.nc',
-        './data_for_figures/TROPOMI_OH_rep_GFAS_COinv_2x25_2023_fire_7day.nc',
-        './data_for_figures/TROPOMI_OH_rep_QFED_COinv_2x25_2023_fire_7day.nc'
+        './data_for_figures/TROPOMI_rep_QFED_COinv_2x25_2023_fire_7day.nc'
     ]
+    #'./data_for_figures/TROPOMI_OH_GFED_COinv_2x25_2023_fire_3day.nc',
+    #'./data_for_figures/TROPOMI_OH_GFAS_COinv_2x25_2023_fire_3day.nc',
+    #'./data_for_figures/TROPOMI_OH_QFED_COinv_2x25_2023_fire_3day.nc',
+    #'./data_for_figures/TROPOMI_OH_rep_GFED_COinv_2x25_2023_fire_3day.nc',
+    #'./data_for_figures/TROPOMI_OH_rep_GFAS_COinv_2x25_2023_fire_3day.nc',
+    #'./data_for_figures/TROPOMI_OH_rep_QFED_COinv_2x25_2023_fire_3day.nc',
+    #'./data_for_figures/TROPOMI_OH_GFED_COinv_2x25_2023_fire_7day.nc',
+    #'./data_for_figures/TROPOMI_OH_GFAS_COinv_2x25_2023_fire_7day.nc',
+    #'./data_for_figures/TROPOMI_OH_QFED_COinv_2x25_2023_fire_7day.nc',
+    #'./data_for_figures/TROPOMI_OH_rep_GFED_COinv_2x25_2023_fire_7day.nc',
+    #'./data_for_figures/TROPOMI_OH_rep_GFAS_COinv_2x25_2023_fire_7day.nc',
+    #'./data_for_figures/TROPOMI_OH_rep_QFED_COinv_2x25_2023_fire_7day.nc'
+    #]
 
     posterior_flux = np.zeros(len(file_names))
 
@@ -82,12 +83,23 @@ if __name__ == '__main__':
     Top_down_min = np.min(posterior_flux)*1e-12
     Top_down_max = np.max(posterior_flux)*1e-12
 
+    print(' Top-down mean: '+str(Top_down_mean)+' TgC')
+    print(' Top-down min: '+str(Top_down_min)+' TgC')
+    print(' Top-down max: '+str(Top_down_max)+' TgC')
+
     # Define the data
-    year =	np.array([2016,2017,2018,2019,2020,2021])
-    forest_sink = np.array([-37.2,-37.1,-36.5,-37.4,-35.9,-36.3])
-    HWP = np.array([37.3,37.2,38.0,35.5,35.0,34.8])
-    natural_disturbance = np.array([32.7,65.5,73.6,46.6,5.7,84.5])
-    total_co2 = np.array([152.1,154.5,157.4,157.8,142.6,146.5])
+    # https://data-donnees.az.ec.gc.ca/data/substances/monitor/canada-s-official-greenhouse-gas-inventory/A-IPCC-Sector/?lang=en
+    #	EN_Annex9_GHG_IPCC_Canada.xlsx
+    year = np.array([2015,2016,2017,2018,2019,2020,2021,2022])
+    forest_sink = np.array([-25.0,-26.9,-27.2,-27.2,-28.3,-27.6,-28.6,-29.5])
+    HWP = np.array([38.1,37.3,37.3,38.0,35.5,37.2,35.9,35.9])
+    total_co2 = np.array([154.3,152.4,155.4,157.9,158.7,143.6,147.4,150.2])
+    natural_disturbance = np.array([65.2, 24.9, 53.0, 64.4, 39.4, 07.9, 76.3, 23.1])
+    #year =	np.array([2016,2017,2018,2019,2020,2021])
+    #forest_sink = np.array([-37.2,-37.1,-36.5,-37.4,-35.9,-36.3])
+    #HWP = np.array([37.3,37.2,38.0,35.5,35.0,34.8])
+    #natural_disturbance = np.array([32.7,65.5,73.6,46.6,5.7,84.5])
+    #total_co2 = np.array([152.1,154.5,157.4,157.8,142.6,146.5])
 
     # Plot the data
     fig = plt.figure(2,figsize=(6*0.95,4*0.95),dpi=300)
@@ -106,10 +118,6 @@ if __name__ == '__main__':
     plt.plot(year,total_co2,'o',color='grey',markersize=4)
     plt.text(2016.15,160,'Total CO$_2$ emissions',color='grey',ha='left',va='bottom')
     # Canadian Fires
-    #plt.plot(2023,421.3,'ko')
-    #l5=plt.plot([2023,2023],[387.5,460.8],'k')
-    #plt.plot([2022.8,2023.2],[460.8,460.8],'k')
-    #plt.plot([2022.8,2023.2],[387.5,387.5],'k')
     plt.plot(2023,Top_down_mean,'ko')
     l5=plt.plot([2023,2023],[Top_down_min,Top_down_max],'k')
     plt.plot([2022.8,2023.2],[Top_down_max,Top_down_max],'k')

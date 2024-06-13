@@ -84,6 +84,7 @@ def plot_TCCON_obs(ax1,Y_P,HX_P,Vmin,Vmax,Vvals,tlab,ylab='None',xlab='None'):
 
 def make_full_plot(base_dir1,base_dir2,TCCONpath,QFEDprior,QFEDpost,GFASprior,GFASpost,GFEDprior,GFEDpost,fignum,figname):
 
+    print(base_dir1+QFEDprior)
     Y_Prior_QFED, HX_Prior_QFED, doy_Prior_QFED = read_TCCON(base_dir1+QFEDprior,TCCONpath)
     Y_Post_QFED, HX_Post_QFED, doy_Post_QFED = read_TCCON(base_dir2+QFEDpost,TCCONpath)
     Y_Prior_GFAS, HX_Prior_GFAS, doy_Prior_GFAS = read_TCCON(base_dir1+GFASprior,TCCONpath)
@@ -115,28 +116,28 @@ def plot_mean_TCCON_surface(figure_name,title_name,TCCONpath):
     # ===========
     Y_Prior_QFED, HX_Prior_QFED, doy_Prior_QFED = read_TCCON('/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Prior_COinv_QFED_AprSep',TCCONpath)
     # --
-    Y_Post_QFED_3day, HX_Post_QFED_3day, doy_Post_QFED_3day = read_TCCON('/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Run_COinv_QFED_2023',TCCONpath)
-    Y_Post_QFED_rep_3day, HX_Post_QFED_rep_3day, doy_Post_QFED_rep_3day = read_TCCON('/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Run_COinv_rep_QFED_2023',TCCONpath)
-    Y_Post_QFED_7day, HX_Post_QFED_7day, doy_Post_QFED_7day = read_TCCON('/nobackup/bbyrne1/GHGF-CMS-7day-COinv-2023/Run_COinv_QFED_2023',TCCONpath)
-    Y_Post_QFED_rep_7day, HX_Post_QFED_rep_7day, doy_Post_QFED_rep_7day = read_TCCON('/nobackup/bbyrne1/GHGF-CMS-7day-COinv-2023/Run_COinv_rep_QFED_2023',TCCONpath)
+    Y_Post_QFED_3day, HX_Post_QFED_3day, doy_Post_QFED_3day = read_TCCON('/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Run'+Run_COinv+'_COinv_QFED_2023',TCCONpath)
+    Y_Post_QFED_rep_3day, HX_Post_QFED_rep_3day, doy_Post_QFED_rep_3day = read_TCCON('/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Run'+Run_COinv+'_COinv_rep_QFED_2023',TCCONpath)
+    Y_Post_QFED_7day, HX_Post_QFED_7day, doy_Post_QFED_7day = read_TCCON('/nobackup/bbyrne1/GHGF-CMS-7day-COinv-2023/Run'+Run_COinv+'_COinv_QFED_2023',TCCONpath)
+    Y_Post_QFED_rep_7day, HX_Post_QFED_rep_7day, doy_Post_QFED_rep_7day = read_TCCON('/nobackup/bbyrne1/GHGF-CMS-7day-COinv-2023/Run'+Run_COinv+'_COinv_rep_QFED_2023',TCCONpath)
     #--
     HX_Post_QFED = ( HX_Post_QFED_3day + HX_Post_QFED_rep_3day + HX_Post_QFED_7day + HX_Post_QFED_rep_7day ) /4.
     # ===========
     Y_Prior_GFED, HX_Prior_GFED, doy_Prior_GFED = read_TCCON('/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Prior_COinv_GFED_AprSep',TCCONpath)
     # --
-    Y_Post_GFED_3day, HX_Post_GFED_3day, doy_Post_GFED_3day = read_TCCON('/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Run_COinv_GFED_2023',TCCONpath)
-    Y_Post_GFED_rep_3day, HX_Post_GFED_rep_3day, doy_Post_GFED_rep_3day = read_TCCON('/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Run_COinv_rep_GFED_2023',TCCONpath)
-    Y_Post_GFED_7day, HX_Post_GFED_7day, doy_Post_GFED_7day = read_TCCON('/nobackup/bbyrne1/GHGF-CMS-7day-COinv-2023/Run_COinv_GFED_2023',TCCONpath)
-    Y_Post_GFED_rep_7day, HX_Post_GFED_rep_7day, doy_Post_GFED_rep_7day = read_TCCON('/nobackup/bbyrne1/GHGF-CMS-7day-COinv-2023/Run_COinv_rep_GFED_2023',TCCONpath)
+    Y_Post_GFED_3day, HX_Post_GFED_3day, doy_Post_GFED_3day = read_TCCON('/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Run'+Run_COinv+'_COinv_GFED_2023',TCCONpath)
+    Y_Post_GFED_rep_3day, HX_Post_GFED_rep_3day, doy_Post_GFED_rep_3day = read_TCCON('/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Run'+Run_COinv+'_COinv_rep_GFED_2023',TCCONpath)
+    Y_Post_GFED_7day, HX_Post_GFED_7day, doy_Post_GFED_7day = read_TCCON('/nobackup/bbyrne1/GHGF-CMS-7day-COinv-2023/Run'+Run_COinv+'_COinv_GFED_2023',TCCONpath)
+    Y_Post_GFED_rep_7day, HX_Post_GFED_rep_7day, doy_Post_GFED_rep_7day = read_TCCON('/nobackup/bbyrne1/GHGF-CMS-7day-COinv-2023/Run'+Run_COinv+'_COinv_rep_GFED_2023',TCCONpath)
     #--
     HX_Post_GFED = ( HX_Post_GFED_3day + HX_Post_GFED_rep_3day + HX_Post_GFED_7day + HX_Post_GFED_rep_7day ) /4.
     # ===========
     Y_Prior_GFAS, HX_Prior_GFAS, doy_Prior_GFAS = read_TCCON('/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Prior_COinv_GFAS_AprSep',TCCONpath)
     # --
-    Y_Post_GFAS_3day, HX_Post_GFAS_3day, doy_Post_GFAS_3day = read_TCCON('/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Run_COinv_GFAS_2023',TCCONpath)
-    Y_Post_GFAS_rep_3day, HX_Post_GFAS_rep_3day, doy_Post_GFAS_rep_3day = read_TCCON('/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Run_COinv_rep_GFAS_2023',TCCONpath)
-    Y_Post_GFAS_7day, HX_Post_GFAS_7day, doy_Post_GFAS_7day = read_TCCON('/nobackup/bbyrne1/GHGF-CMS-7day-COinv-2023/Run_COinv_GFAS_2023',TCCONpath)
-    Y_Post_GFAS_rep_7day, HX_Post_GFAS_rep_7day, doy_Post_GFAS_rep_7day = read_TCCON('/nobackup/bbyrne1/GHGF-CMS-7day-COinv-2023/Run_COinv_rep_GFAS_2023',TCCONpath)
+    Y_Post_GFAS_3day, HX_Post_GFAS_3day, doy_Post_GFAS_3day = read_TCCON('/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Run'+Run_COinv+'_COinv_GFAS_2023',TCCONpath)
+    Y_Post_GFAS_rep_3day, HX_Post_GFAS_rep_3day, doy_Post_GFAS_rep_3day = read_TCCON('/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/Run'+Run_COinv+'_COinv_rep_GFAS_2023',TCCONpath)
+    Y_Post_GFAS_7day, HX_Post_GFAS_7day, doy_Post_GFAS_7day = read_TCCON('/nobackup/bbyrne1/GHGF-CMS-7day-COinv-2023/Run'+Run_COinv+'_COinv_GFAS_2023',TCCONpath)
+    Y_Post_GFAS_rep_7day, HX_Post_GFAS_rep_7day, doy_Post_GFAS_rep_7day = read_TCCON('/nobackup/bbyrne1/GHGF-CMS-7day-COinv-2023/Run'+Run_COinv+'_COinv_rep_GFAS_2023',TCCONpath)
     #--
     HX_Post_GFAS = ( HX_Post_GFAS_3day + HX_Post_GFAS_rep_3day + HX_Post_GFAS_7day + HX_Post_GFAS_rep_7day ) /4.
     # ===========
@@ -215,53 +216,56 @@ def plot_mean_TCCON_injection(figure_name,title_name,TCCONpath):
 
 if __name__ == '__main__':
 
+    # either '_OH' or ''
+    OH_choice = '_OH'
+    
     base_dir1 = '/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/'
     base_dir2 = '/nobackup/bbyrne1/GHGF-CMS-3day-COinv-2023/'
 
-    make_full_plot(base_dir1,base_dir2,'TCCON_PA_GGG2020_XCO','Prior_COinv_QFED_AprSep','Run_COinv_QFED_2023',
-                   'Prior_COinv_GFAS_AprSep','Run_COinv_GFAS_2023','Prior_COinv_GFED_AprSep','Run_COinv_GFED_2023',1,'TCCON_XCO_PA_3day.png')
-    make_full_plot(base_dir1,base_dir2,'TCCON_ETL_GGG2020_XCO','Prior_COinv_QFED_AprSep','Run_COinv_QFED_2023',
-                   'Prior_COinv_GFAS_AprSep','Run_COinv_GFAS_2023','Prior_COinv_GFED_AprSep','Run_COinv_GFED_2023',2,'TCCON_XCO_ETL_3day.png')
+    make_full_plot(base_dir1,base_dir2,'TCCON_PA_GGG2020_XCO','Prior'+OH_choice+'_COinv_QFED_AprSep','Run'+OH_choice+'_COinv_QFED_2023',
+                   'Prior'+OH_choice+'_COinv_GFAS_AprSep','Run'+OH_choice+'_COinv_GFAS_2023','Prior'+OH_choice+'_COinv_GFED_AprSep','Run'+OH_choice+'_COinv_GFED_2023',1,'TCCON_XCO_PA_3day.png')
+    make_full_plot(base_dir1,base_dir2,'TCCON_ETL_GGG2020_XCO','Prior'+OH_choice+'_COinv_QFED_AprSep','Run'+OH_choice+'_COinv_QFED_2023',
+                   'Prior'+OH_choice+'_COinv_GFAS_AprSep','Run'+OH_choice+'_COinv_GFAS_2023','Prior'+OH_choice+'_COinv_GFED_AprSep','Run'+OH_choice+'_COinv_GFED_2023',2,'TCCON_XCO_ETL_3day.png')
     
-    make_full_plot(base_dir1,base_dir2,'TCCON_PA_GGG2020_XCO','Prior_COinv_QFED_AprSep','Run_COinv_rep_QFED_2023',
-                   'Prior_COinv_GFAS_AprSep','Run_COinv_rep_GFAS_2023','Prior_COinv_GFED_AprSep','Run_COinv_rep_GFED_2023',3,'TCCON_XCO_PA_rep_3day.png')
-    make_full_plot(base_dir1,base_dir2,'TCCON_ETL_GGG2020_XCO','Prior_COinv_QFED_AprSep','Run_COinv_rep_QFED_2023',
-                   'Prior_COinv_GFAS_AprSep','Run_COinv_rep_GFAS_2023','Prior_COinv_GFED_AprSep','Run_COinv_rep_GFED_2023',4,'TCCON_XCO_ETL_rep_3day.png')
+    make_full_plot(base_dir1,base_dir2,'TCCON_PA_GGG2020_XCO','Prior'+OH_choice+'_COinv_QFED_AprSep','Run'+OH_choice+'_COinv_rep_QFED_2023',
+                   'Prior'+OH_choice+'_COinv_GFAS_AprSep','Run'+OH_choice+'_COinv_rep_GFAS_2023','Prior'+OH_choice+'_COinv_GFED_AprSep','Run'+OH_choice+'_COinv_rep_GFED_2023',3,'TCCON_XCO_PA_rep_3day.png')
+    make_full_plot(base_dir1,base_dir2,'TCCON_ETL_GGG2020_XCO','Prior'+OH_choice+'_COinv_QFED_AprSep','Run'+OH_choice+'_COinv_rep_QFED_2023',
+                   'Prior'+OH_choice+'_COinv_GFAS_AprSep','Run'+OH_choice+'_COinv_rep_GFAS_2023','Prior'+OH_choice+'_COinv_GFED_AprSep','Run'+OH_choice+'_COinv_rep_GFED_2023',4,'TCCON_XCO_ETL_rep_3day.png')
 
     base_dir2 = '/nobackup/bbyrne1/GHGF-CMS-7day-COinv-2023/'
     
-    make_full_plot(base_dir1,base_dir2,'TCCON_PA_GGG2020_XCO','Prior_COinv_QFED_AprSep','Run_COinv_QFED_2023',
-                   'Prior_COinv_GFAS_AprSep','Run_COinv_GFAS_2023','Prior_COinv_GFED_AprSep','Run_COinv_GFED_2023',5,'TCCON_XCO_PA_7day.png')
-    make_full_plot(base_dir1,base_dir2,'TCCON_ETL_GGG2020_XCO','Prior_COinv_QFED_AprSep','Run_COinv_QFED_2023',
-                   'Prior_COinv_GFAS_AprSep','Run_COinv_GFAS_2023','Prior_COinv_GFED_AprSep','Run_COinv_GFED_2023',6,'TCCON_XCO_ETL_7day.png')
+    make_full_plot(base_dir1,base_dir2,'TCCON_PA_GGG2020_XCO','Prior'+OH_choice+'_COinv_QFED_AprSep','Run'+OH_choice+'_COinv_QFED_2023',
+                   'Prior'+OH_choice+'_COinv_GFAS_AprSep','Run'+OH_choice+'_COinv_GFAS_2023','Prior'+OH_choice+'_COinv_GFED_AprSep','Run'+OH_choice+'_COinv_GFED_2023',5,'TCCON_XCO_PA_7day.png')
+    make_full_plot(base_dir1,base_dir2,'TCCON_ETL_GGG2020_XCO','Prior'+OH_choice+'_COinv_QFED_AprSep','Run'+OH_choice+'_COinv_QFED_2023',
+                   'Prior'+OH_choice+'_COinv_GFAS_AprSep','Run'+OH_choice+'_COinv_GFAS_2023','Prior'+OH_choice+'_COinv_GFED_AprSep','Run'+OH_choice+'_COinv_GFED_2023',6,'TCCON_XCO_ETL_7day.png')
 
-    make_full_plot(base_dir1,base_dir2,'TCCON_PA_GGG2020_XCO','Prior_COinv_QFED_AprSep','Run_COinv_rep_QFED_2023',
-                   'Prior_COinv_GFAS_AprSep','Run_COinv_rep_GFAS_2023','Prior_COinv_GFED_AprSep','Run_COinv_rep_GFED_2023',7,'TCCON_XCO_PA_rep_7day.png')
-    make_full_plot(base_dir1,base_dir2,'TCCON_ETL_GGG2020_XCO','Prior_COinv_QFED_AprSep','Run_COinv_rep_QFED_2023',
-                   'Prior_COinv_GFAS_AprSep','Run_COinv_rep_GFAS_2023','Prior_COinv_GFED_AprSep','Run_COinv_rep_GFED_2023',8,'TCCON_XCO_ETL_rep_7day.png')
+    make_full_plot(base_dir1,base_dir2,'TCCON_PA_GGG2020_XCO','Prior'+OH_choice+'_COinv_QFED_AprSep','Run'+OH_choice+'_COinv_rep_QFED_2023',
+                   'Prior'+OH_choice+'_COinv_GFAS_AprSep','Run'+OH_choice+'_COinv_rep_GFAS_2023','Prior'+OH_choice+'_COinv_GFED_AprSep','Run'+OH_choice+'_COinv_rep_GFED_2023',7,'TCCON_XCO_PA_rep_7day.png')
+    make_full_plot(base_dir1,base_dir2,'TCCON_ETL_GGG2020_XCO','Prior'+OH_choice+'_COinv_QFED_AprSep','Run'+OH_choice+'_COinv_rep_QFED_2023',
+                   'Prior'+OH_choice+'_COinv_GFAS_AprSep','Run'+OH_choice+'_COinv_rep_GFAS_2023','Prior'+OH_choice+'_COinv_GFED_AprSep','Run'+OH_choice+'_COinv_rep_GFED_2023',8,'TCCON_XCO_ETL_rep_7day.png')
     
     base_dir1 = '/nobackup/bbyrne1/GHGF-CMS-3day-COinv-injh/'
     base_dir2 = '/nobackup/bbyrne1/GHGF-CMS-3day-COinv-injh/'
 
-    make_full_plot(base_dir1,base_dir2,'TCCON_PA_GGG2020_XCO','QFED_prior_3day','QFED_post_3day',
-                   'GFAS_prior_3day','GFAS_post_3day','GFED_prior_3day','GFED_post_3day',1,'TCCON_XCO_PA_3day_injh.png')
-    make_full_plot(base_dir1,base_dir2,'TCCON_ETL_GGG2020_XCO','QFED_prior_3day','QFED_post_3day',
-                   'GFAS_prior_3day','GFAS_post_3day','GFED_prior_3day','GFED_post_3day',1,'TCCON_XCO_ETL_3day_injh.png')
+    make_full_plot(base_dir1,base_dir2,'TCCON_PA_GGG2020_XCO','QFED_prior_3day'+OH_choice,'QFED_post_3day'+OH_choice,
+                   'GFAS_prior_3day'+OH_choice,'GFAS_post_3day'+OH_choice,'GFED_prior_3day'+OH_choice,'GFED_post_3day'+OH_choice,1,'TCCON_XCO_PA_3day_injh.png')
+    make_full_plot(base_dir1,base_dir2,'TCCON_ETL_GGG2020_XCO','QFED_prior_3day'+OH_choice,'QFED_post_3day'+OH_choice,
+                   'GFAS_prior_3day'+OH_choice,'GFAS_post_3day'+OH_choice,'GFED_prior_3day'+OH_choice,'GFED_post_3day'+OH_choice,1,'TCCON_XCO_ETL_3day_injh.png')
 
-    make_full_plot(base_dir1,base_dir2,'TCCON_PA_GGG2020_XCO','QFED_rep_prior_3day','QFED_rep_post_3day',
-                   'GFAS_rep_prior_3day','GFAS_rep_post_3day','GFED_rep_prior_3day','GFED_rep_post_3day',1,'TCCON_XCO_PA_rep_3day_injh.png')
-    make_full_plot(base_dir1,base_dir2,'TCCON_ETL_GGG2020_XCO','QFED_rep_prior_3day','QFED_rep_post_3day',
-                   'GFAS_rep_prior_3day','GFAS_rep_post_3day','GFED_rep_prior_3day','GFED_rep_post_3day',1,'TCCON_XCO_ETL_rep_3day_injh.png')
+    make_full_plot(base_dir1,base_dir2,'TCCON_PA_GGG2020_XCO','QFED_rep_prior_3day'+OH_choice,'QFED_rep_post_3day'+OH_choice,
+                   'GFAS_rep_prior_3day'+OH_choice,'GFAS_rep_post_3day'+OH_choice,'GFED_rep_prior_3day'+OH_choice,'GFED_rep_post_3day'+OH_choice,1,'TCCON_XCO_PA_rep_3day_injh.png')
+    make_full_plot(base_dir1,base_dir2,'TCCON_ETL_GGG2020_XCO','QFED_rep_prior_3day'+OH_choice,'QFED_rep_post_3day'+OH_choice,
+                   'GFAS_rep_prior_3day'+OH_choice,'GFAS_rep_post_3day'+OH_choice,'GFED_rep_prior_3day'+OH_choice,'GFED_rep_post_3day'+OH_choice,1,'TCCON_XCO_ETL_rep_3day_injh.png')
     
-    make_full_plot(base_dir1,base_dir2,'TCCON_PA_GGG2020_XCO','QFED_prior_7day','QFED_post_7day',
-                   'GFAS_prior_7day','GFAS_post_7day','GFED_prior_7day','GFED_post_7day',1,'TCCON_XCO_PA_7day_injh.png')
-    make_full_plot(base_dir1,base_dir2,'TCCON_ETL_GGG2020_XCO','QFED_prior_7day','QFED_post_7day',
-                   'GFAS_prior_7day','GFAS_post_7day','GFED_prior_7day','GFED_post_7day',1,'TCCON_XCO_ETL_7day_injh.png')
+    make_full_plot(base_dir1,base_dir2,'TCCON_PA_GGG2020_XCO','QFED_prior_7day'+OH_choice,'QFED_post_7day'+OH_choice,
+                   'GFAS_prior_7day'+OH_choice,'GFAS_post_7day'+OH_choice,'GFED_prior_7day'+OH_choice,'GFED_post_7day'+OH_choice,1,'TCCON_XCO_PA_7day_injh.png')
+    make_full_plot(base_dir1,base_dir2,'TCCON_ETL_GGG2020_XCO','QFED_prior_7day'+OH_choice,'QFED_post_7day'+OH_choice,
+                   'GFAS_prior_7day'+OH_choice,'GFAS_post_7day'+OH_choice,'GFED_prior_7day'+OH_choice,'GFED_post_7day'+OH_choice,1,'TCCON_XCO_ETL_7day_injh.png')
     
-    make_full_plot(base_dir1,base_dir2,'TCCON_PA_GGG2020_XCO','QFED_rep_prior_7day','QFED_rep_post_7day',
-                   'GFAS_rep_prior_7day','GFAS_rep_post_7day','GFED_rep_prior_7day','GFED_rep_post_7day',1,'TCCON_XCO_PA_rep_7day_injh.png')
-    make_full_plot(base_dir1,base_dir2,'TCCON_ETL_GGG2020_XCO','QFED_rep_prior_7day','QFED_rep_post_7day',
-                   'GFAS_rep_prior_7day','GFAS_rep_post_7day','GFED_rep_prior_7day','GFED_rep_post_7day',1,'TCCON_XCO_ETL_rep_7day_injh.png')
+    make_full_plot(base_dir1,base_dir2,'TCCON_PA_GGG2020_XCO','QFED_rep_prior_7day'+OH_choice,'QFED_rep_post_7day'+OH_choice,
+                   'GFAS_rep_prior_7day'+OH_choice,'GFAS_rep_post_7day'+OH_choice,'GFED_rep_prior_7day'+OH_choice,'GFED_rep_post_7day'+OH_choice,1,'TCCON_XCO_PA_rep_7day_injh.png')
+    make_full_plot(base_dir1,base_dir2,'TCCON_ETL_GGG2020_XCO','QFED_rep_prior_7day'+OH_choice,'QFED_rep_post_7day'+OH_choice,
+                   'GFAS_rep_prior_7day'+OH_choice,'GFAS_rep_post_7day'+OH_choice,'GFED_rep_prior_7day'+OH_choice,'GFED_rep_post_7day'+OH_choice,1,'TCCON_XCO_ETL_rep_7day_injh.png')
 
     # =====================================
 

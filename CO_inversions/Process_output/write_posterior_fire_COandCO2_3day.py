@@ -150,7 +150,7 @@ def write_dataset(nc_out, CO_Flux_prior, CO_Flux_post, CO2_Flux_prior, CO2_Flux_
 if __name__ == "__main__":
     
     # -- Parameters --
-    iteration = '11'
+    iteration = '33'
     # ----------------
 
     # either '_OH' or ''

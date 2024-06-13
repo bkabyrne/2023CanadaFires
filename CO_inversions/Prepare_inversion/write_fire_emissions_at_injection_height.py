@@ -69,16 +69,22 @@ def create_time_arrays(year):
     # ===============================================
 
 
-def write_fluxes(inventory,year,month,day, CO_flux_BB_3hr, version, injh_level,optDays,rep=0):
+def write_fluxes(inventory,year,month,day, CO_flux_BB_3hr, version, injh_level,optDays,OH_choice,rep=0):
     #
     # =========================================
     # Write out fluxes and SF uncertainty
     # =========================================
     #
     if rep==1:
-        nc_out = '/nobackup/bbyrne1/Flux_2x25_CO/BiomassBurn/'+inventory+'_rep_'+version+'_'+optDays+'_injh/'+str(year).zfill(4)+'/'+str(month).zfill(2)+'/'+str(day).zfill(2)+'.nc'
+        directory_path = '/nobackup/bbyrne1/Flux_2x25_CO/BiomassBurn/'+inventory+'_rep_'+version+'_'+optDays+OH_choice+'_injh/'+str(year).zfill(4)+'/'+str(month).zfill(2)
+        if not os.path.exists(directory_path):
+            os.makedirs(directory_path)
+        nc_out = directory_path+'/'+str(day).zfill(2)+'.nc'
     else:
-        nc_out = '/nobackup/bbyrne1/Flux_2x25_CO/BiomassBurn/'+inventory+'_'+version+'_'+optDays+'_injh/'+str(year).zfill(4)+'/'+str(month).zfill(2)+'/'+str(day).zfill(2)+'.nc'
+        directory_path = '/nobackup/bbyrne1/Flux_2x25_CO/BiomassBurn/'+inventory+'_'+version+'_'+optDays+OH_choice+'_injh/'+str(year).zfill(4)+'/'+str(month).zfill(2)
+        if not os.path.exists(directory_path):
+            os.makedirs(directory_path)
+        nc_out = directory_path+'/'+str(day).zfill(2)+'.nc'
     print(nc_out)
     #
     dataset = Dataset(nc_out,'w')
@@ -105,16 +111,18 @@ if __name__ == "__main__":
     # Only Apr-Sep
     I_AprSep = np.where(np.logical_and(month_of_year>=4,month_of_year<=9))
 
-    prior_model =''
+    # either '_OH' or ''  
+    OH_choice = '_OH'
+    
     for prior_model in ['GFED','QFED','GFAS']:
         for rep in [0,1]:
             for optDays in ['3day','7day']:
     
                 # Reads whole year
                 if rep==1:
-                    file_name = '/u/bbyrne1/python_codes/Canada_Fires_2023/Byrne_etal_codes/plot_figures/data_for_figures/TROPOMI_rep_'+prior_model+'_COinv_2x25_'+str(year).zfill(4)+'_fire_'+optDays+'.nc'
+                    file_name = '/u/bbyrne1/python_codes/Canada_Fires_2023/Byrne_etal_codes/plot_figures/data_for_figures/TROPOMI'+OH_choice+'_rep_'+prior_model+'_COinv_2x25_'+str(year).zfill(4)+'_fire_'+optDays+'.nc'
                 else:
-                    file_name = '/u/bbyrne1/python_codes/Canada_Fires_2023/Byrne_etal_codes/plot_figures/data_for_figures/TROPOMI_'+prior_model+'_COinv_2x25_'+str(year).zfill(4)+'_fire_'+optDays+'.nc'
+                    file_name = '/u/bbyrne1/python_codes/Canada_Fires_2023/Byrne_etal_codes/plot_figures/data_for_figures/TROPOMI'+OH_choice+'_'+prior_model+'_COinv_2x25_'+str(year).zfill(4)+'_fire_'+optDays+'.nc'
                 print(file_name)
                 f=Dataset(file_name,mode='r')
                 CO_flux_BB_prior = f.variables['CO_prior'][:] * 1000./(60.*60.*24.) # gC/m2/d --> kgC/km2/s
@@ -125,6 +133,6 @@ if __name__ == "__main__":
     
                     CO_flux_BB_prior_3hr, CO_flux_BB_post_3hr, injh_level = calculate_daily_injh_and_CO_flux( year, month_of_year[i-1], day_of_month[i-1], CO_flux_BB_prior[i-1,:,:], CO_flux_BB_post[i-1,:,:])
                 
-                write_fluxes( prior_model, year, month_of_year[i-1], day_of_month[i-1], CO_flux_BB_prior_3hr, 'prior', injh_level,optDays,rep=rep)
-                write_fluxes( prior_model, year, month_of_year[i-1], day_of_month[i-1], CO_flux_BB_post_3hr, 'post', injh_level,optDays,rep=rep)
+                    #write_fluxes( prior_model, year, month_of_year[i-1], day_of_month[i-1], CO_flux_BB_prior_3hr, 'prior', injh_level,optDays,OH_choice,rep=rep)
+                    write_fluxes( prior_model, year, month_of_year[i-1], day_of_month[i-1], CO_flux_BB_post_3hr, 'post', injh_level,optDays,OH_choice,rep=rep)
     

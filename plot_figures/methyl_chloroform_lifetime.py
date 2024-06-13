@@ -155,6 +155,10 @@ if __name__ == '__main__':
     Kazu_OH = np.zeros(365)
     GC_OH = np.zeros(365)
 
+    reaction_diurnal = np.zeros((365,30,91,144))
+    reaction_mean = np.zeros((365,30,91,144))
+    airmass_year = np.zeros((365,30,91,144))
+
     # Iterate over each day in 2023
     start_date = datetime(2023, 1, 1)
     for day_of_year in range(365):
@@ -200,10 +204,67 @@ if __name__ == '__main__':
         # Calculate CH3CCl3 lifetime
         GC_OH[day_of_year], GC_lifetime[day_of_year] = calculate_CH3CCl3_daily_lifetime(temperature.values[:, 0:30, :, :], GC_OH_3hr[:, 0:30, :, :],airmass[:, 0:30, :, :])
 
-    # Print the calculated lifetimes
-    #print("Kazu Lifetime: ", Kazu_lifetime)
-    #print("GC Lifetime: ", GC_lifetime)
+        k = 1.64e-12 * np.exp(-1520.0 / temperature.values[:, 0:30, :, :])
+        reaction = k * OH_3hr[:, 0:30, :, :]
+        reaction_diurnal[day_of_year,:,:,:] = np.mean(reaction,0)
 
+        k = 1.64e-12 * np.exp(-1520.0 / np.mean(temperature.values[:, 0:30, :, :],0))
+        reaction = k * np.mean(OH_3hr[:, 0:30, :, :],0)
+        reaction_mean[day_of_year,:,:,:] = reaction
+
+        airmass_year[day_of_year,:,:,:] = np.mean(airmass[:, 0:30, :, :],0)
+        
+        
+from mpl_toolkits.basemap import Basemap, cm
+import numpy.ma as ma
+
+# Plot function                                                                                      
+# Define XMid and YMid from lat/lon coordinates in the datasets                                  
+XMid = MERRA2_atm['lon'].values
+YMid = MERRA2_atm['lat'].values
+# Create a meshgrid with the edges                                                               
+xx, yy = np.meshgrid(XMid, YMid)
+
+fig = plt.figure(202, figsize=(15, 8), dpi=200)
+fig.set_size_inches(8, 10)
+m = Basemap(projection='robin', lon_0=0, resolution='c')
+
+#reaction_diurnal_bdy_Jul = np.sum(np.sum(reaction_diurnal[182:213,0:15,:,:] * airmass_year[182:213,0:15,:,:],0),0) / np.sum(np.sum(airmass_year[182:213,0:15,:,:],0),0)
+#reaction_mean_bdy_Jul = np.sum(np.sum(reaction_mean[182:213,0:15,:,:] * airmass_year[182:213,0:15,:,:],0),0) / np.sum(np.sum(airmass_year[182:213,0:15,:,:],0),0)
+reaction_diurnal_bdy_Jul = np.sum(np.sum(reaction_diurnal[:,0:15,:,:] * airmass_year[:,0:15,:,:],0),0) / np.sum(np.sum(airmass_year[:,0:15,:,:],0),0)
+reaction_mean_bdy_Jul = np.sum(np.sum(reaction_mean[:,0:15,:,:] * airmass_year[:,0:15,:,:],0),0) / np.sum(np.sum(airmass_year[:,0:15,:,:],0),0)
+
+# Plot 1: GEOS-Chem OH                                                                           
+ax1 = fig.add_axes([0.05, 0.01 + 2. / 3., 0.9, 0.9 / 3.])
+m.ax = ax1
+pcm1 = m.pcolormesh(xx, yy, ma.masked_invalid(reaction_diurnal_bdy_Jul),
+                    cmap='CMRmap_r', shading='auto', latlon=True, vmin=0, vmax=4e-8)
+m.drawcoastlines()
+plt.colorbar(pcm1, extend='both', aspect=50)
+plt.title('MEAN(k*[OH]) <2 km')
+
+# Plot 2: Kazu OH                                                                                
+ax2 = fig.add_axes([0.05, 0.01 + 1. / 3., 0.9, 0.9 / 3.])
+m.ax = ax2
+pcm2 = m.pcolormesh(xx, yy, ma.masked_invalid(reaction_mean_bdy_Jul),
+                    cmap='CMRmap_r', shading='auto', latlon=True, vmin=0, vmax=4e-8)
+m.drawcoastlines()
+plt.colorbar(pcm2, extend='both', aspect=50)
+plt.title('MEAN(k)*MEAN([OH]) <2 km')
+
+# Plot 3: Difference (Kazu - GEOS-Chem)                                                          
+ax3 = fig.add_axes([0.05, 0.01 + 0. / 3., 0.9, 0.9 / 3.])
+m.ax = ax3
+difference = 100. * (reaction_diurnal_bdy_Jul - reaction_mean_bdy_Jul) / reaction_mean_bdy_Jul
+pcm3 = m.pcolormesh(xx, yy, ma.masked_invalid(difference),
+                    cmap='RdBu_r', shading='auto', latlon=True, vmin=-4, vmax=4)
+m.drawcoastlines()
+plt.colorbar(pcm3, extend='both', aspect=50)
+plt.title('Percentage difference')
+# Save the figure                                                                                
+plt.savefig(f'ReactionRate_diff.png', dpi=300)
+plt.clf()
+plt.close()
 
 # 60 sec/min
 # 60 min/hr

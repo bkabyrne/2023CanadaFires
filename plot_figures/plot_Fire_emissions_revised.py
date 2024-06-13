@@ -246,7 +246,8 @@ if __name__ == '__main__':
     post_MaySep_TROPOMI_GFAS_3day_vec = np.zeros(5)
     for i in range(5):
         nc_file = './data_for_figures/TROPOMI_GFAS_COinv_2x25_'+str(i+2019)+'_fire_3day.nc'
-        post_MaySep_TROPOMI_GFAS_3day_vec[i] = MaySep_forest_fluxes(i+2019,nc_file,Forest_mask_2x25)
+        if os.path.exists(nc_file):
+            post_MaySep_TROPOMI_GFAS_3day_vec[i] = MaySep_forest_fluxes(i+2019,nc_file,Forest_mask_2x25)
     # ---------------------------------------------
     post_MaySep_TROPOMI_rep_GFED_3day_vec = np.zeros(5)
     for i in range(5):
@@ -259,7 +260,8 @@ if __name__ == '__main__':
     post_MaySep_TROPOMI_rep_GFAS_3day_vec = np.zeros(5)
     for i in range(5):
         nc_file = './data_for_figures/TROPOMI_rep_GFAS_COinv_2x25_'+str(i+2019)+'_fire_3day.nc'
-        post_MaySep_TROPOMI_rep_GFAS_3day_vec[i] = MaySep_forest_fluxes(i+2019,nc_file,Forest_mask_2x25)
+        if os.path.exists(nc_file):
+            post_MaySep_TROPOMI_rep_GFAS_3day_vec[i] = MaySep_forest_fluxes(i+2019,nc_file,Forest_mask_2x25)
     # ---------------------------------------------
     post_MaySep_TROPOMI_GFED_7day_vec = np.zeros(5)
     for i in range(5):
@@ -272,7 +274,8 @@ if __name__ == '__main__':
     post_MaySep_TROPOMI_GFAS_7day_vec = np.zeros(5)
     for i in range(5):
         nc_file = './data_for_figures/TROPOMI_GFAS_COinv_2x25_'+str(i+2019)+'_fire_7day.nc'
-        post_MaySep_TROPOMI_GFAS_7day_vec[i] = MaySep_forest_fluxes(i+2019,nc_file,Forest_mask_2x25)
+        if os.path.exists(nc_file):
+            post_MaySep_TROPOMI_GFAS_7day_vec[i] = MaySep_forest_fluxes(i+2019,nc_file,Forest_mask_2x25)
     # ---------------------------------------------
     post_MaySep_TROPOMI_rep_GFED_7day_vec = np.zeros(5)
     for i in range(5):
@@ -285,20 +288,21 @@ if __name__ == '__main__':
     post_MaySep_TROPOMI_rep_GFAS_7day_vec = np.zeros(5)
     for i in range(5):
         nc_file = './data_for_figures/TROPOMI_rep_GFAS_COinv_2x25_'+str(i+2019)+'_fire_7day.nc'
-        post_MaySep_TROPOMI_rep_GFAS_7day_vec[i] = MaySep_forest_fluxes(i+2019,nc_file,Forest_mask_2x25)
+        if os.path.exists(nc_file):
+            post_MaySep_TROPOMI_rep_GFAS_7day_vec[i] = MaySep_forest_fluxes(i+2019,nc_file,Forest_mask_2x25)
 
-        post_MaySep_TROPOMI_vec = (post_MaySep_TROPOMI_GFED_3day_vec +
-                                   post_MaySep_TROPOMI_QFED_3day_vec +
-                                   post_MaySep_TROPOMI_GFAS_3day_vec +
-                                   post_MaySep_TROPOMI_rep_GFED_3day_vec +
-                                   post_MaySep_TROPOMI_rep_QFED_3day_vec +
-                                   post_MaySep_TROPOMI_rep_GFAS_3day_vec +
-                                   post_MaySep_TROPOMI_GFED_7day_vec +
-                                   post_MaySep_TROPOMI_QFED_7day_vec +
-                                   post_MaySep_TROPOMI_GFAS_7day_vec +
-                                   post_MaySep_TROPOMI_rep_GFED_7day_vec +
-                                   post_MaySep_TROPOMI_rep_QFED_7day_vec +
-                                   post_MaySep_TROPOMI_rep_GFAS_7day_vec ) / 12.
+    post_MaySep_TROPOMI_vec = (post_MaySep_TROPOMI_GFED_3day_vec +
+                               post_MaySep_TROPOMI_QFED_3day_vec +
+                               post_MaySep_TROPOMI_GFAS_3day_vec +
+                               post_MaySep_TROPOMI_rep_GFED_3day_vec +
+                               post_MaySep_TROPOMI_rep_QFED_3day_vec +
+                               post_MaySep_TROPOMI_rep_GFAS_3day_vec +
+                               post_MaySep_TROPOMI_GFED_7day_vec +
+                               post_MaySep_TROPOMI_QFED_7day_vec +
+                               post_MaySep_TROPOMI_GFAS_7day_vec +
+                               post_MaySep_TROPOMI_rep_GFED_7day_vec +
+                               post_MaySep_TROPOMI_rep_QFED_7day_vec +
+                               post_MaySep_TROPOMI_rep_GFAS_7day_vec ) / 12.
 
     # ----------- Monte Carlo estimates
     nc_file = './data_for_figures/TROPOMI_GFED_COinv_2x25_2023_fire_7day_MonteCarlo.nc'
@@ -648,6 +652,9 @@ if __name__ == '__main__':
     plt.plot([4-0.45,4+0.45],[np.min(all_min),np.min(all_min)],'r',solid_capstyle='butt',alpha=0.75)
     plt.plot([4-0.45,4+0.45],[np.max(all_max),np.max(all_max)],'r',solid_capstyle='butt',alpha=0.75)
     plt.text(4,np.max(all_max)+0.05,'2023 Canada fires',ha='center',va='bottom',rotation=90,fontsize=8)
+    print('Minimum emission: '+str(1000.*np.min(all_min)))
+    print('Maximum emission: '+str(1000.*np.max(all_max)))
+    print('Mean emission: '+str(1000.*np.mean(all_arr)))
     #
     plt.bar(5,Russia_FF,color='k',width=0.9,alpha=0.2)
     plt.text(5,Russia_FF+0.05,'Russia',ha='center',va='bottom',rotation=90,fontsize=8)

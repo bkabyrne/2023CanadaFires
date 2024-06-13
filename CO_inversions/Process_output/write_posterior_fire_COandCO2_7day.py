@@ -174,7 +174,7 @@ def write_dataset(nc_out, CO_Flux_prior, CO_Flux_post, CO2_Flux_prior, CO2_Flux_
 if __name__ == "__main__":
     
     # -- Parameters --
-    iteration = '11'
+    iteration = '33'
     # ----------------
 
     # either '_OH' or ''
@@ -190,6 +190,10 @@ if __name__ == "__main__":
                 else:
                     ncfile_SF = '/nobackup/bbyrne1/GHGF-CMS-7day-COinv-'+str(year).zfill(4)+'/Run'+OH_choice+'_COinv_'+prior_model+'_'+str(year).zfill(4)+'/GDT-EMS/EMS-sf-'+iteration+'.nc'
                 print(ncfile_SF)
+
+                if ncfile_SF == '/nobackup/bbyrne1/GHGF-CMS-7day-COinv-2023/Run_OH_COinv_rep_QFED_2023/GDT-EMS/EMS-sf-33.nc':
+                    ncfile_SF = '/nobackup/bbyrne1/GHGF-CMS-7day-COinv-2023/Run_OH_COinv_rep_QFED_2023/GDT-EMS/EMS-sf-25.nc'
+                
                 f=Dataset(ncfile_SF,mode='r')
                 lon=f.variables['lon'][:]
                 lat=f.variables['lat'][:]
