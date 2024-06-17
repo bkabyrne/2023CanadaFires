@@ -14,7 +14,8 @@ This repository contains python programs used to 1. Process TROPOMI CO retrieval
 
 # Contents:
 
-Contents of ./CO_inversions/Prepare_inversion
+-----
+## Contents of ./CO_inversions/Prepare_inversion
 - **download_GFAS.py:**
 > Download GFAS fire inventory
 - **download_QFED.sh:**
@@ -36,7 +37,8 @@ Contents of ./CO_inversions/Prepare_inversion
 - **prepare_SF_perturb_7day.py:**
 > Writes perturbed fluxes for Monte Carlo experiments (7-day optimization)
 
-Contents of ./CO_inversions/Process_output
+-----
+## Contents of ./CO_inversions/Process_output
 - **write_posterior_fire_COandCO2_3day_MonteCarlo.py:**
 > Writes posterior fire for Monte Carlo ensemble (3-day)
 - **write_posterior_fire_COandCO2_7day_MonteCarlo.py:**
@@ -49,8 +51,11 @@ Contents of ./CO_inversions/Process_output
 > Writes posterior non-fire emissions (7-Day opt)
 - **write_posterior_otherFlux_COandCO2_3day.py:**
 > Writes posterior non-fire emissions (3-Day opt)
+- **write_for_archiving.py:**
+> Writes CO and CO2 emissions for archiving (easy use format)
 
-Contents of ./TROPOMI_superobs
+-----
+## Contents of ./TROPOMI_superobs
 - **calc_TROPOMI_mole_fractions_2x25.py:**
 > Maps TROPOMI obs to GEOS-Chem grid and calculates super-obs
 - **Scripts for generating representativeness errors:**
@@ -63,7 +68,8 @@ Contents of ./TROPOMI_superobs
 - **make_TROPOMI_MonteCarlo.py:**
 > Calculates TROPOMI data with perturbations for Monte Carlo tests
 
-Contents of ./plot_figures
+-----
+## Contents of ./plot_figures
 - **plot_Fire_emissions_revised.py:**
 > Creates figures 1, S1 and S2
 - **plot_climate_anomalies.py:**
