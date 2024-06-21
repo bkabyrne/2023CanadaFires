@@ -1,12 +1,12 @@
 ## README
 
-**Code to reproduce the results of "Unprecedented Canadian forest fire carbon emissions during 2023"**
-
+**Code to reproduce the results of "Vast 2023 Canadian forest fire carbon emissions"**
 **contact: Brendan Byrne**
-
 **email: brendan.k.byrne@jpl.nasa.gov**
 
 Copyright 2024, by the California Institute of Technology. ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged. Any commercial use must be negotiated with the Office of Technology Transfer at the California Institute of Technology.
+ 
+This software may be subject to U.S. export control laws. By accepting this software, the user agrees to comply with all applicable U.S. export laws and regulations. User has the responsibility to obtain export licenses, or other export authority as may be required before exporting such information to foreign countries or providing access to foreign persons.
 
 ## Overview:
 
