@@ -1,8 +1,12 @@
 ## README
 
 **Code to reproduce the results of "Vast 2023 Canadian forest fire carbon emissions"**
+
 **contact: Brendan Byrne**
+
 **email: brendan.k.byrne@jpl.nasa.gov**
+
+---
 
 Copyright 2024, by the California Institute of Technology. ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged. Any commercial use must be negotiated with the Office of Technology Transfer at the California Institute of Technology.
  
@@ -10,12 +14,18 @@ This software may be subject to U.S. export control laws. By accepting this soft
 
 ## Overview:
 
-This repository contains python programs used to 1. Process TROPOMI CO retrievals (./TROPOMI_superobs), 2. generate the input data for the CO inversions (./CO_inversions/Prepare_inversion), 3. process the output from the CO inversions (CO_inversions/Process_output), and 4. make figures shown in the paper (plot_figures). Climate data were downloaded as described in the methods sections. Inverse estimates can be reproduced using the GEOS-Chem adjoint, which can be downloaded from here: http://wiki.seas.harvard.edu/geos-chem/index.php/Quick_Start_Guide, following the inversion set-up described in the methods. All of the results of the manuscript can be reproduced from the data provided (provided separately upon manuscript publication). The python codes can reproduce the figures from the manuscript from those data.
+This repository contains Python programs used to:
 
-# Contents:
+1. Process TROPOMI CO retrievals (`./TROPOMI_superobs`)
+2. Generate the input data for the CO inversions (`./CO_inversions/Prepare_inversion`)
+3. Process the output from the CO inversions (`CO_inversions/Process_output`)
+4. Make figures shown in the paper (`plot_figures`)
 
------
-## Contents of ./CO_inversions/Prepare_inversion
+Climate data were downloaded as described in the methods sections. Inverse estimates can be reproduced using the GEOS-Chem adjoint, which can be downloaded [here](http://wiki.seas.harvard.edu/geos-chem/index.php/Quick_Start_Guide), following the inversion set-up described in the methods. All the results of the manuscript can be reproduced from the data provided (provided separately upon manuscript publication). The Python codes can reproduce the figures from the manuscript from those data.
+
+## Contents:
+
+### Contents of ./CO_inversions/Prepare_inversion
 - **download_GFAS.py:**
 > Download GFAS fire inventory
 - **download_QFED.sh:**
@@ -37,8 +47,7 @@ This repository contains python programs used to 1. Process TROPOMI CO retrieval
 - **prepare_SF_perturb_7day.py:**
 > Writes perturbed fluxes for Monte Carlo experiments (7-day optimization)
 
------
-## Contents of ./CO_inversions/Process_output
+### Contents of ./CO_inversions/Process_output
 - **write_posterior_fire_COandCO2_3day_MonteCarlo.py:**
 > Writes posterior fire for Monte Carlo ensemble (3-day)
 - **write_posterior_fire_COandCO2_7day_MonteCarlo.py:**
@@ -54,8 +63,7 @@ This repository contains python programs used to 1. Process TROPOMI CO retrieval
 - **write_for_archiving.py:**
 > Writes CO and CO2 emissions for archiving (easy use format)
 
------
-## Contents of ./TROPOMI_superobs
+### Contents of ./TROPOMI_superobs
 - **calc_TROPOMI_mole_fractions_2x25.py:**
 > Maps TROPOMI obs to GEOS-Chem grid and calculates super-obs
 - **Scripts for generating representativeness errors:**
@@ -68,8 +76,7 @@ This repository contains python programs used to 1. Process TROPOMI CO retrieval
 - **make_TROPOMI_MonteCarlo.py:**
 > Calculates TROPOMI data with perturbations for Monte Carlo tests
 
------
-## Contents of ./plot_figures
+### Contents of ./plot_figures
 - **plot_Fire_emissions_revised.py:**
 > Creates figures 1, S1 and S2
 - **plot_climate_anomalies.py:**
