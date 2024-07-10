@@ -1,6 +1,6 @@
 ## README
 
-**Code to reproduce the results of "Vast 2023 Canadian forest fire carbon emissions"**
+**Code to reproduce the results of "Substantial 2023 Canadian forest fire carbon emissions"**
 
 **contact: Brendan Byrne**
 
