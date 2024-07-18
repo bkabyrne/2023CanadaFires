@@ -1,6 +1,6 @@
 ## README
 
-**Code to reproduce the results of "Substantial 2023 Canadian forest fire carbon emissions"**
+**Code to reproduce the results of "Carbon emissions from the 2023 Canadian Wildfires"**
 
 **contact: Brendan Byrne**
 
