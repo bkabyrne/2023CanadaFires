@@ -246,8 +246,8 @@ plt.text(55,750*0.98,'Cumulative fire',va='top',ha='left')
 plt.text(55,665*0.98,'CO$_2 +$CO (TgC)',va='top',ha='left')
 ax1.set_xticklabels(['J','F','M','A','M','J','J','A','S','O','N','D','J'])
 #
-plt.savefig('Figures/Byrne_etal_Fig2.png', dpi=300)
-
+#plt.savefig('Figures/Byrne_etal_Fig2.png', dpi=300)
+plt.savefig('Figures/Byrne_etal_Fig2.eps', format='eps')
 
 
 

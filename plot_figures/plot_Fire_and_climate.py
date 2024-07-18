@@ -197,7 +197,8 @@ plt.text(1.15,2085,'2080s',ha='left',va='center',fontsize=8.5)
 plt.text(1.15,2095,'2090s',ha='left',va='center',fontsize=8.5)
 plt.text(5.5,2050,'Decade of SSP2-4.5 projection',ha='center',va='center',rotation=270)
 #
-plt.savefig('Figures/Byrne_etal_Fig3.png')
+#plt.savefig('Figures/Byrne_etal_Fig3.png')
+plt.savefig('Figures/Byrne_etal_Fig3.eps', format='eps')
 
 
  

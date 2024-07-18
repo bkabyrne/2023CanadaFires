@@ -55,19 +55,6 @@ def calculate_posterior_managed_forest_emissions():
         './data_for_figures/TROPOMI_rep_GFAS_COinv_2x25_2023_fire_7day.nc',
         './data_for_figures/TROPOMI_rep_QFED_COinv_2x25_2023_fire_7day.nc'
     ]
-    #'./data_for_figures/TROPOMI_OH_GFED_COinv_2x25_2023_fire_3day.nc',
-    #'./data_for_figures/TROPOMI_OH_GFAS_COinv_2x25_2023_fire_3day.nc',
-    #'./data_for_figures/TROPOMI_OH_QFED_COinv_2x25_2023_fire_3day.nc',
-    #'./data_for_figures/TROPOMI_OH_rep_GFED_COinv_2x25_2023_fire_3day.nc',
-    #'./data_for_figures/TROPOMI_OH_rep_GFAS_COinv_2x25_2023_fire_3day.nc',
-    #'./data_for_figures/TROPOMI_OH_rep_QFED_COinv_2x25_2023_fire_3day.nc',
-    #'./data_for_figures/TROPOMI_OH_GFED_COinv_2x25_2023_fire_7day.nc',
-    #'./data_for_figures/TROPOMI_OH_GFAS_COinv_2x25_2023_fire_7day.nc',
-    #'./data_for_figures/TROPOMI_OH_QFED_COinv_2x25_2023_fire_7day.nc',
-    #'./data_for_figures/TROPOMI_OH_rep_GFED_COinv_2x25_2023_fire_7day.nc',
-    #'./data_for_figures/TROPOMI_OH_rep_GFAS_COinv_2x25_2023_fire_7day.nc',
-    #'./data_for_figures/TROPOMI_OH_rep_QFED_COinv_2x25_2023_fire_7day.nc'
-    #]
 
     posterior_flux = np.zeros(len(file_names))
 
@@ -95,11 +82,6 @@ if __name__ == '__main__':
     HWP = np.array([38.1,37.3,37.3,38.0,35.5,37.2,35.9,35.9])
     total_co2 = np.array([154.3,152.4,155.4,157.9,158.7,143.6,147.4,150.2])
     natural_disturbance = np.array([65.2, 24.9, 53.0, 64.4, 39.4, 07.9, 76.3, 23.1])
-    #year =	np.array([2016,2017,2018,2019,2020,2021])
-    #forest_sink = np.array([-37.2,-37.1,-36.5,-37.4,-35.9,-36.3])
-    #HWP = np.array([37.3,37.2,38.0,35.5,35.0,34.8])
-    #natural_disturbance = np.array([32.7,65.5,73.6,46.6,5.7,84.5])
-    #total_co2 = np.array([152.1,154.5,157.4,157.8,142.6,146.5])
 
     # Plot the data
     fig = plt.figure(2,figsize=(6*0.95,4*0.95),dpi=300)
@@ -127,6 +109,6 @@ if __name__ == '__main__':
     plt.text(2020.15,395,'(managed lands)',color='k',ha='left',va='bottom')
     plt.xlim([2015.5,2023.5])
     plt.ylim([-70,475])
-    plt.savefig('Figures/Inventory_Fires.png')
+    plt.savefig('Figures/Inventory_Fires.eps', format='eps')
     plt.clf()
     plt.close()

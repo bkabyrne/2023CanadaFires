@@ -16,6 +16,11 @@ from netCDF4 import Dataset
 from mpl_toolkits.basemap import Basemap, maskoceans
 from pylab import *
 
+matplotlib.rcParams['pdf.fonttype'] = 42
+matplotlib.rcParams['ps.fonttype'] = 42
+matplotlib.rcParams['svg.fonttype'] = 'none'
+#plt.rcParams['font.family'] = 'Arial'
+
 '''
  -------- plot_Fire_emissions_revised.py                        
                                                            
@@ -354,7 +359,8 @@ if __name__ == '__main__':
     # ===== Plot Figure S1 =====
     #
     #
-    cmap_test1 = cm.get_cmap('cividis')
+    #cmap_test1 = cm.get_cmap('cividis')
+    cmap_test1 = matplotlib.colormaps['cividis']
     colors = cmap_test1(np.linspace(0, 1, 5))
     #
     fig = plt.figure(25, figsize=(7,2), dpi=300)
@@ -437,8 +443,8 @@ if __name__ == '__main__':
     plt.legend((l1[0],l2[0],l3[0],l4[0]),('GFED','GFAS','QFED','MOPITT GFED'),ncol=2,handletextpad=0.3,labelspacing=0.5)
     plt.ylim([0,850])
     plt.ylabel('CO$_2$+CO May-Sep\nfire emissions (TgC)')
-    plt.savefig('Figures/Byrne_etal_FigS1_revision.png', dpi=300)
-
+    #plt.savefig('Figures/Byrne_etal_FigS1_revision.png', dpi=300)
+    plt.savefig('Figures/Byrne_etal_FigS1_revision.eps', format='eps')
 
 
 
@@ -488,7 +494,8 @@ if __name__ == '__main__':
     plt.xlim([0,25])
     plt.xticks([])
     plt.ylabel('CO$_2$+CO May-Sep\nfire emissions (PgC)')
-    plt.savefig('Figures/Byrne_etal_FigSX_revision.png', dpi=300)
+    #plt.savefig('Figures/Byrne_etal_FigSX_revision.png', dpi=300)
+    plt.savefig('Figures/Byrne_etal_FigSX_revision.eps', format='eps')
 
 
 
@@ -680,9 +687,5 @@ if __name__ == '__main__':
     #
     plt.legend((l1[0],l2[0]),('Fossil','Fire'),ncol=1,handletextpad=0.3,labelspacing=0.5,loc='upper right',bbox_to_anchor=(1.02, 0.98-0.06))
     
-    plt.savefig('Figures/Byrne_etal_Fig1_revision.png', dpi=300)
-
-
-
-
-
+    #plt.savefig('Figures/Byrne_etal_Fig1_revision.png', dpi=300)
+    plt.savefig('Figures/Byrne_etal_Fig1_revision.svg', format='svg')
